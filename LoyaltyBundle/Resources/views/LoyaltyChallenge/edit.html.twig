@@ -1,0 +1,548 @@
+{% extends 'RAPPCRMBundle::layout.html.twig' %}
+{%block pageTitle %}
+Edit Loyalty Challenge
+{% endblock pageTitle %}
+
+{% block content %}
+{% if error==0 %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-reorder"></i>Edit Loyalty Challenge Id: {{ entity.id }}
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div id="msgCheckCampaignId" class="alert alert-danger fade in">
+                    <strong>Error!</strong> This Campaign Id is already in use.<br />
+                        Please try other one.<br/>
+                </div>
+                <div id="msgCheckSku" class="alert alert-danger fade in">
+                    <strong>Error!</strong> This Sku is already in use.<br />
+                        Please try other one.<br/>
+                </div>
+                <input type="hidden" value="{{ entity.id }}" id="LoyaltyChallenge_entityId" name="LoyaltyChallenge[entityId]"/>
+                {{ form_start(form) }}
+                    <div class="form-body">                        
+                        {% for field in form %}
+                            {% if field.vars.name == 'endDate' %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckdates" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> Date range is invalid.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% elseif field.vars.name == "slug" %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckSlug" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> This Slug is already in use.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% elseif field.vars.name == "LoyaltyChallengeRequirements0" %}
+                                <div  id= "challenge_requirements" class="alert alert-info fade in">
+                                    {{ form_row(field) }}
+                                </div>
+                            {% elseif field.vars.name == "LoyaltyChallengeRequirements1" %}
+                                <div  id= "challenge_requirements" class="alert alert-info fade in">
+                                    {{ form_row(field) }}
+                                </div>
+                            {% elseif field.vars.name == "LoyaltyChallengeRequirements2" %}
+                                <div  id= "challenge_requirements" class="alert alert-info fade in">
+                                    {{ form_row(field) }}
+                                </div>
+                            {% else %}
+                                {{ form_row(field) }}
+                            {% endif %}                            
+                        {% endfor %}
+                    </div>
+                    <div id="msgCheckRequirements" class="alert alert-danger fade in">
+                        <strong>Error!</strong> You must fill at least one of the requirements.<br />
+                            Please try again.<br/>
+                    </div>
+                    <div id="msgCheckWeekDays" class="alert alert-danger fade in">
+                        <strong>Error!</strong> Weekday Max. must be equal or greater than Weekday Min.<br />
+                            Please try again.<br/>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn blue" type="submit">Submit</button>
+                        <button class="btn default" type="button" onclick="history.go(-1);">Cancel</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</ul>
+{% else %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> A problem has been occurred while processing you request.<br />
+            Please try again or contact your systems administrator.<br/>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+{% block readyScripts %}
+
+$(function() {
+    $( "#LoyaltyChallenge_startDate" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: +2
+            });
+    $( "#LoyaltyChallenge_endDate" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: +3
+            });
+});
+$("#entityId").hide();
+$("#msgCheckCampaignId").hide();
+$("#msgCheckSku").hide();
+$("#msgCheckSlug").hide();
+$("#msgCheckdates").hide();
+$("#msgCheckRequirements").hide();
+$("#msgCheckWeekDays").hide();
+
+$( "#LoyaltyChallenge_startDate" ).focus(function(){
+    $("#msgCheckdates").hide();
+});
+$( "#LoyaltyChallenge_endDate" ).focus(function(){
+    $("#msgCheckdates").hide();
+});
+
+$( "#LoyaltyChallenge_campaignId" ).focus(function(){
+    $("#msgCheckCampaignId").hide();
+});
+
+$( "#LoyaltyChallenge_sku" ).focus(function(){
+    $("#msgCheckSku").hide();
+});
+
+$( "#LoyaltyChallenge_slug" ).focus(function(){
+    $("#msgCheckSlug").hide();
+});
+
+
+$("#LoyaltyChallenge_campaignId").blur(function(){
+
+    $.post("{{ path('LoyaltyChallengescheckCampaignIdEdit') }}",$('#LoyaltyChallenge_campaignId, #LoyaltyChallenge_entityId').serialize())
+        .done(function( data ) {
+            if(data.success == 0){$("#msgCheckCampaignId").show();}
+        });  
+});
+
+$("#LoyaltyChallenge_sku").blur(function(){
+
+    $.post("{{ path('LoyaltyChallengescheckSkuEdit') }}",$('#LoyaltyChallenge_sku, #LoyaltyChallenge_entityId').serialize())
+        .done(function( data ) {
+            if(data.success == 0){$("#msgCheckSku").show();}
+        });  
+});
+
+$("#LoyaltyChallenge_slug").blur(function(){
+
+    $.post("{{ path('LoyaltyChallengescheckSlugEdit') }}",$('#LoyaltyChallenge_slug, #LoyaltyChallenge_entityId').serialize())
+        .done(function( data ) {
+            if(data.success == 0){$("#msgCheckSlug").show();}
+        });  
+});
+
+$( "#LoyaltyChallenge_endDate" ).blur(function(){
+    var startDate = document.getElementById('LoyaltyChallenge_startDate');
+    var endDate =  document.getElementById('LoyaltyChallenge_endDate');
+    startDateObj = new Date(startDate.value);
+    endDateObj = new Date(endDate.value);
+    start = startDateObj.getTime();
+    end = endDateObj.getTime();
+    if (start>end){$("#msgCheckdates").show();}else{$("#msgCheckdates").hide();}
+});
+
+var checkedRequirement0 = '{{ entity.challengeRequirements0}}';
+
+    switch (checkedRequirement0) {
+        case 'CategoryRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("0");
+            break;
+        case 'RewardRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("1");
+            break;
+        case 'SpendRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("2");
+            break;
+        case 'ShiftRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("3");
+            break;
+        case 'SurveyRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("4");
+            break;
+        case 'TakeoutRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("5");
+            break;
+        case 'WeekdayRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("6");
+            break;
+        case 'FrequencyRequirement':
+            $("#LoyaltyChallenge_challengeRequirements0").val("7");
+            break;
+    }
+
+    $("#msgCheckRequirements").hide();
+
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_quantity").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_count").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_minPoints").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_amount").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_shift").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_survey").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_takeout").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMin").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMax").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_numVisits").parents(".form-group").hide();
+
+    switch (checkedRequirement0) {
+        case 'CategoryRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_quantity").parents(".form-group").show();
+            break;
+        case 'RewardRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_count").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_minPoints").parents(".form-group").show();
+            break;
+        case 'SpendRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_amount").parents(".form-group").show();
+            break;
+        case 'ShiftRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_shift").parents(".form-group").show();
+            break;
+        case 'SurveyRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_survey").parents(".form-group").show();
+            break;
+        case 'TakeoutRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_takeout").parents(".form-group").show();
+            break;
+        case 'WeekdayRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMin").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMax").parents(".form-group").show();
+            break;
+        case 'FrequencyRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_numVisits").parents(".form-group").show();
+            break;
+    }
+
+$("#LoyaltyChallenge_challengeRequirements0").change(function(){
+    $("#msgCheckRequirements").hide();
+
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_quantity").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_count").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_minPoints").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_amount").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_shift").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_survey").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_takeout").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMin").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMax").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_numVisits").parents(".form-group").hide();
+    
+    var requirement0 = document.getElementById('LoyaltyChallenge_challengeRequirements0')
+        .options[document.getElementById('LoyaltyChallenge_challengeRequirements0').selectedIndex]
+        .text;
+    switch (requirement0) {
+        case 'Check Category':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_quantity").parents(".form-group").show();
+            break;
+        case 'Check Reward':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_count").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_minPoints").parents(".form-group").show();
+            break;
+        case 'Check Spend':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_amount").parents(".form-group").show();
+            break;
+        case 'Check Shift':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_shift").parents(".form-group").show();
+            break;
+        case 'Check Survey':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_survey").parents(".form-group").show();
+            break;
+        case 'Check Takeout':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_takeout").parents(".form-group").show();
+            break;
+        case 'Check Weekday':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMin").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMax").parents(".form-group").show();
+            break;
+        case 'Consumer Frequency':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements0_numVisits").parents(".form-group").show();
+            break;
+    }
+});
+
+var checkedRequirement1 = '{{ entity.challengeRequirements1}}';
+
+    switch (checkedRequirement1) {
+        case 'CategoryRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("0");
+            break;
+        case 'RewardRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("1");
+            break;
+        case 'SpendRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("2");
+            break;
+        case 'ShiftRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("3");
+            break;
+        case 'SurveyRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("4");
+            break;
+        case 'TakeoutRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("5");
+            break;
+        case 'WeekdayRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("6");
+            break;
+        case 'FrequencyRequirement':
+            $("#LoyaltyChallenge_challengeRequirements1").val("7");
+            break;
+    }
+
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_quantity").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_count").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_minPoints").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_amount").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_shift").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_survey").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_takeout").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMin").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMax").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_numVisits").parents(".form-group").hide();
+
+    switch (checkedRequirement1) {
+        case 'CategoryRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_quantity").parents(".form-group").show();
+            break;
+        case 'RewardRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_count").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_minPoints").parents(".form-group").show();
+            break;
+        case 'SpendRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_amount").parents(".form-group").show();
+            break;
+        case 'ShiftRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_shift").parents(".form-group").show();
+            break;
+        case 'SurveyRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_survey").parents(".form-group").show();
+            break;
+        case 'TakeoutRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_takeout").parents(".form-group").show();
+            break;
+        case 'WeekdayRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMin").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMax").parents(".form-group").show();
+            break;
+        case 'FrequencyRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_numVisits").parents(".form-group").show();
+            break;
+    }
+
+$("#LoyaltyChallenge_challengeRequirements1").change(function(){
+
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_quantity").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_count").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_minPoints").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_amount").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_shift").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_survey").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_takeout").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMin").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMax").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_numVisits").parents(".form-group").hide();
+    
+    var requirement1 = document.getElementById('LoyaltyChallenge_challengeRequirements1')
+        .options[document.getElementById('LoyaltyChallenge_challengeRequirements1').selectedIndex]
+        .text;
+    switch (requirement1) {
+        case 'Check Category':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_quantity").parents(".form-group").show();
+            break;
+        case 'Check Reward':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_count").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_minPoints").parents(".form-group").show();
+            break;
+        case 'Check Spend':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_amount").parents(".form-group").show();
+            break;
+        case 'Check Shift':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_shift").parents(".form-group").show();
+            break;
+        case 'Check Survey':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_survey").parents(".form-group").show();
+            break;
+        case 'Check Takeout':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_takeout").parents(".form-group").show();
+            break;
+        case 'Check Weekday':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMin").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMax").parents(".form-group").show();
+            break;
+        case 'Consumer Frequency':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements1_numVisits").parents(".form-group").show();
+            break;
+    }
+});
+
+var checkedRequirement2 = '{{ entity.challengeRequirements2}}';
+
+    switch (checkedRequirement2) {
+        case 'CategoryRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("0");
+            break;
+        case 'RewardRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("1");
+            break;
+        case 'SpendRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("2");
+            break;
+        case 'ShiftRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("3");
+            break;
+        case 'SurveyRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("4");
+            break;
+        case 'TakeoutRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("5");
+            break;
+        case 'WeekdayRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("6");
+            break;
+        case 'FrequencyRequirement':
+            $("#LoyaltyChallenge_challengeRequirements2").val("7");
+            break;
+    }
+
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_quantity").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_count").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_minPoints").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_amount").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_shift").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_survey").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_takeout").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMin").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMax").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_numVisits").parents(".form-group").hide();
+
+    switch (checkedRequirement2) {
+        case 'CategoryRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_quantity").parents(".form-group").show();
+            break;
+        case 'RewardRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_count").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_minPoints").parents(".form-group").show();
+            break;
+        case 'SpendRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_amount").parents(".form-group").show();
+            break;
+        case 'ShiftRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_shift").parents(".form-group").show();
+            break;
+        case 'SurveyRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_survey").parents(".form-group").show();
+            break;
+        case 'TakeoutRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_takeout").parents(".form-group").show();
+            break;
+        case 'WeekdayRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMin").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMax").parents(".form-group").show();
+            break;
+        case 'FrequencyRequirement':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_numVisits").parents(".form-group").show();
+            break;
+    }
+
+$("#LoyaltyChallenge_challengeRequirements2").change(function(){
+
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_quantity").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_count").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_minPoints").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_amount").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_shift").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_survey").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_takeout").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMin").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMax").parents(".form-group").hide();
+    $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_numVisits").parents(".form-group").hide();
+    
+    var requirement2 = document.getElementById('LoyaltyChallenge_challengeRequirements2')
+        .options[document.getElementById('LoyaltyChallenge_challengeRequirements2').selectedIndex]
+        .text;
+    switch (requirement2) {
+        case 'Check Category':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_quantity").parents(".form-group").show();
+            break;
+        case 'Check Reward':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_count").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_minPoints").parents(".form-group").show();
+            break;
+        case 'Check Spend':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_amount").parents(".form-group").show();
+            break;
+        case 'Check Shift':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_shift").parents(".form-group").show();
+            break;
+        case 'Check Survey':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_survey").parents(".form-group").show();
+            break;
+        case 'Check Takeout':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_takeout").parents(".form-group").show();
+            break;
+        case 'Check Weekday':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMin").parents(".form-group").show();
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMax").parents(".form-group").show();
+            break;
+        case 'Consumer Frequency':
+            $("#LoyaltyChallenge_LoyaltyChallengeRequirements2_numVisits").parents(".form-group").show();
+            break;
+    }
+});
+
+$( "form" ).submit(function( event ) {
+    var requirement = document.getElementById('LoyaltyChallenge_challengeRequirements0')
+        .options[document.getElementById('LoyaltyChallenge_challengeRequirements0').selectedIndex]
+        .text;
+    var quantity = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_quantity').value;
+    var count = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_count').value;
+    var minPoints = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_minPoints').value;
+    var amount = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_amount').value;
+    var shift = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_shift').value;
+    var survey = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_survey').value;
+    var takeout = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_takeout').value;
+    var weekdayMin = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMin').value;
+    var weekdayMax = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_weekdayMax').value;
+    var weekdayMin1 = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMin').value;
+    var weekdayMax1 = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements1_weekdayMax').value;
+    var weekdayMin2 = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMin').value;
+    var weekdayMax2 = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements2_weekdayMax').value;
+    var numVisits = document.getElementById('LoyaltyChallenge_LoyaltyChallengeRequirements0_numVisits').value;
+    if (!quantity && !count && !minPoints && !amount && !shift && !survey && !takeout && !weekdayMin && !weekdayMax && !numVisits) {
+        $("#msgCheckRequirements").show();
+        event.preventDefault();
+    }
+    if (requirement == 'Select a Requirement...') {
+        $("#msgCheckRequirements").show();
+        event.preventDefault();
+    }
+    if (weekdayMin>weekdayMax) {
+        $("#msgCheckWeekDays").show();
+        event.preventDefault();
+    }
+    if (weekdayMin1>weekdayMax1) {
+        $("#msgCheckWeekDays").show();
+        event.preventDefault();
+    }
+    if (weekdayMin2>weekdayMax2) {
+        $("#msgCheckWeekDays").show();
+        event.preventDefault();
+    }
+});
+{% endblock %}

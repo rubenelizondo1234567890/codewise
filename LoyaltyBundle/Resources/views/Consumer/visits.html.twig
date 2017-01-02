@@ -1,0 +1,39 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Visit History for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    {% if visits | length == 0 %}
+        <div class="text-center">This Loyalty member has no visits.</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Store Number</th>
+                    <th>Store Name</th>
+                    <th>Store Location</th>
+                    <th>Check Number</th>
+                    <th>Date</th>
+                    <th>Points Earned</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visit in visits %}
+                    <tr>
+                        <td>{% if visit.check is not empty %}{{ visit.check.storeNumber }}{% endif %}</td>
+                        <td>{{ visit.store.name }}</td>
+                        <td>{{ visit.store.address }}</td>
+                        <td>{% if visit.check is not empty %}{{ visit.check.checkNumber }}{% endif %}</td>
+                        <td>{{ visit.date }}</td>
+                        <td>{{ visit.points.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

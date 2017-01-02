@@ -1,0 +1,56 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Challenges for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    {% if challenges | length == 0 %}
+        <div class="text-center">This Loyalty member has no challenges.</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Descr.</th>
+                    <th>Start Date</th>
+                    <th>Expire Date</th>
+                    <th>Points</th>
+                    <th>Status</th>
+                    <th>Completed Date</th>
+                    <th>Claimed</th>
+                    <th>Claimed Date</th>
+                    <th>Org. #</th>
+                    <th>Check #</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ch in challenges %}
+                    {% set colors = ['green', 'blue', 'goldenrod', 'gray'] %}
+                    <tr style="color: {{ colors[ch.statusID - 1] }}">
+                        <td>{{ ch.name }}</td>
+                        <td>{{ ch.description }}</td>
+                        <td>{{ ch.startDate | date('m-d-Y', false) }}</td>
+                        <td>{{ ch.expireDate | date('m-d-Y', false) }}</td>
+                        <td>{{ ch.points }}</td>
+                        <td>{{ ch.status | capitalize }}</td>
+                        <td>{% if ch.completedDate %}{{ ch.completedDate | date('m-d-Y', false) }}{% endif %}</td>
+                        <td>
+                            {% if ch.claimDate | length == 0 %}
+                                No
+                            {% else %}
+                                Yes
+                            {% endif %}                           
+                        </td>
+                        <td>{% if ch.claimDate %}{{ ch.claimDate | date('m-d-Y', false) }}{% endif %}</td>
+                        <td>{{ ch.organization_no }}</td>
+                        <td>{{ ch.check_no }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

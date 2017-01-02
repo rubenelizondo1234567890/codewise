@@ -1,0 +1,37 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Reward Adjustments for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    {% if rewardAdjustments | length == 0 %}
+        <div class="text-center">This Loyalty member has no Reward adjustments.</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Reward Id</th>
+                    <th>Reward Name</th>
+                    <th>Notes</th>
+                    <th>Date</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rewardAdjustment in rewardAdjustments %}
+                    <tr>
+                        <td>{{ rewardAdjustment.rewardId }}</td>
+                        <td>{{ rewardAdjustment.rewardName }}</td>
+                        <td>{{ rewardAdjustment.notes }}</td>
+                        <td>{{ rewardAdjustment.requestDate | date('Y-m-d', dashboard.timezone) }}</td>
+                        <td>{{ rewardAdjustment.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

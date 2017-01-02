@@ -1,0 +1,41 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h2 class="modal-title">Bundle Id: {{ entity.id }}</h2>
+</div>
+<div class="modal-body">
+    {% if entity | length == 0 %}
+        <div class="text-center">There is no Offer Bundle associated with this id</div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="list-unstyled">
+                    <li><strong>Name: </strong>{{ entity.name }}</li>
+                    <li><strong>Slug: </strong>{{ entity.desc }}</li>
+                    <li><strong>Active: </strong>{{ entity.active ? 'Yes':'No'}}</li>
+                    <li><strong>Start Date: </strong>{{ entity.startDate | date("M j, Y", false)}}</li>
+                    <li><strong>End Date: </strong>{{ entity.endDate | date("M j, Y", false)}}</li>
+                    <li><strong>Type: </strong>{{ entity.typeName}}</li><br />
+                    <li><h3>Offer Bundle Items:</h3></li>
+                    {% for bundleItem in entity.offerBundleItems %}
+                    <ul class="list-unstyled alert alert-danger fade in">
+                        {% if bundleItem.bundleItem == "ChallengeBundleItem" %}
+                            <li><strong>Offer Type: </strong>Challenge</li>
+                        {% elseif bundleItem.bundleItem == "RewardBundleItem" %}
+                            <li><strong>Offer Type: </strong>Reward</li>
+                        {% elseif bundleItem.bundleItem == "ChildOfferBundleItem" %}
+                            <li><strong>Offer Type: </strong>Offer Bundle</li>
+                        {% endif %}
+                        <li><strong>Offer Id: </strong>{{ bundleItem.offerId }}</li>
+                        <li><strong>Order: </strong>{{ bundleItem.order }}</li>
+                        <li><strong>Weight: </strong>{{ bundleItem.weight }}</li>
+                    </ul>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>

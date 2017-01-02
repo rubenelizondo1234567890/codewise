@@ -1,0 +1,66 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span
+            class="sr-only">Close</span></button>
+    <h4 class="modal-title">Loyalty Activity for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    <div class="row-fluid">
+        {% if activities | length == 0 %}
+            <div class="text-center">This Loyalty member has no activity.</div>
+        {% else %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Act. Name</th>
+                    <th>Act. Date</th>
+                    <th>Pts. Earned</th>
+                    <th>Consumer Balance</th>
+                    <th>Awarded Date</th>
+                    <th>Chk Date</th>
+                    <th>Chk No.</th>
+                    <th>Store No.</th>
+                    <th>Store Name</th>
+                    <th>Store Address</th>
+                    <th>Origin</th>
+                    <th>MPR Request</th>
+                    <th>Create Date</th>
+                    <th>Reward</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for activity in activities %}
+                    <tr style="color: {% if activity.pointsEarned < 0 %}red{% else %}green{% endif %}">
+                        <td>{{ activity.eventName }}</td>
+                        {% if activity.eventCode == 1 %}
+                            <td>{{ activity.eventDate? activity.eventDate | date('Y-m-d H:i', false) : '' }}</td>
+                        {% else %}
+                            <td>{{ activity.eventDate? activity.eventDate | date('Y-m-d H:i', dashboard.timezone) : '' }}</td>
+                        {% endif %}
+                        <td>{{ activity.pointsEarned }}</td>
+                        <td>{{ activity.consumerBalance is defined? activity.consumerBalance : '' }}</td>
+                        <td>{{ activity.awardDate? activity.awardDate | date('Y-m-d H:i', dashboard.timezone) : '' }}</td>
+                        <td>{{ activity.checkDate? activity.checkDate | date('Y-m-d H:i', false) : '' }}</td>
+                        <td>{{ activity.checkNumber }}</td>
+                        <td>{{ activity.storeNumber }}</td>
+                        <td>{{ activity.storeName }}</td>
+                        <td>{{ activity.storeAddress }}</td>
+                        <td>{{ activity.origin }}</td>
+                        <td>{{ activity.pointRequest }}</td>
+                        <td>{{ activity.createDate? activity.createDate | date('Y-m-d h:i', dashboard.timezone) : '' }}</td>
+                        {% if activity.reward is defined %}
+                            <td>{{ activity.reward}}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

@@ -1,0 +1,67 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    {% if status == 0%}
+        <h4 class="modal-title">Active Offers for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+    {% else %}
+        <h4 class="modal-title">Expired Offers for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+    {% endif %}
+</div>
+<div class="modal-body">
+<div class="row">
+    <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Disclaimer</th>
+                    <th>Type</th>
+                    <th>Expire Date</th>
+                    <th>Points</th>
+                    <th>Status</th>
+                    <th>Claimed</th>
+                    <th>Claim Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in offers %}
+                    {% set colors = ['green', 'blue', 'goldenrod', 'gray'] %}
+                        <tr style="color: {{ colors[o.statusID - 1] }}">
+                        <td>{{ o.name }}</td>
+                        <td>{{ o.description }}</td>
+                        <td>{{ o.disclaimer }}</td>
+                        <td>{{ o.type }}</td>
+                        <td>{{ o.expireDate | date_modify("-1 day") | date('m-d-Y', false) }}</td>
+                        <td>{{ o.points }}</td>
+                        <td>{{ o.statusName | capitalize }}</td>
+                        <td>
+                            {% if o.claimed == 1%}
+                                Yes
+                            {% else%}
+                                No
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if o.claimed == 1%}
+                                {{ o.requestDate | date('m-d-Y', false) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+                    </div>
+
+                    <div class="margin-top-20">
+                        <ul class="pagination">
+                        </ul>
+                    </div>
+    </div>
+</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

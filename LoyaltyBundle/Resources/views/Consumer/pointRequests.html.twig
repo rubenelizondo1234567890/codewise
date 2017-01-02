@@ -1,0 +1,39 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Point Requests for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    {% if pointRequests | length == 0 %}
+        <div class="text-center">This Loyalty member has no point requests.</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Business Date</th>
+                    <th>Check Number</th>
+                    <th>Check Total</th>
+                    <th>Store Number</th>
+                    <th>Request Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pointRequest in pointRequests %}
+                    <tr>
+                        <td>{{ pointRequest.businessDate | date('Y-m-d') }}</td>
+                        <td>{{ pointRequest.checkNumber }}</td>
+                        <td>${{ pointRequest.checkTotal | number_format(2) }}</td>
+                        <td>{{ pointRequest.storeNumber }}</td>
+                        <td>{{ pointRequest.createDate  | date('Y-m-d h:i A', dashboard.timezone) }}</td>
+                        <td>{{ pointRequest.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

@@ -1,0 +1,34 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h2 class="modal-title">Reward Id: {{ entity.id }}</h2>
+</div>
+<div class="modal-body">
+    {% if entity | length == 0 %}
+        <div class="text-center">There is no Reward associated with this id</div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="list-unstyled">
+                    <li><strong>Program Id: </strong>{{ entity.programId }}</li>
+                    <li><strong>Name: </strong>{{ entity.name }}</li>
+                    <li><strong>Slug: </strong>{{ entity.slug }}</li>
+                    <li><strong>Sku: </strong>{{ entity.sku }}</li>
+                    <li><strong>Monetary Value: </strong>{{ entity.monetaryValue }}</li>
+                    <li><strong>Picture: </strong>{{ entity.picture }}</li>
+                    <li><strong>Picture Small: </strong>{{ entity.pictureSmall }}</li>
+                    <li><strong>Offer Id: </strong>{{ entity.offerID }}</li>
+                    <li><strong>Promo Id: </strong>{{ entity.promoID }}</li>
+                    <li><strong>Active: </strong>{{ entity.active ? 'Yes':'No'}}</li>
+                    <li><strong>Claimable: </strong>{{ entity.isClaimable ? 'Yes':'No'}}</li>
+                    <li><strong>Start Date: </strong>{{ entity.startDate | date("M j, Y", false)}}</li>
+                    <li><strong>End Date: </strong>{{ entity.endDate | date("M j, Y", false)}}</li>
+                    <li><strong>Reward Description: </strong>{{ entity.rewardDescription }}</li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>

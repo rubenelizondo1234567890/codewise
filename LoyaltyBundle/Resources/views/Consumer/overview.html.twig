@@ -1,0 +1,417 @@
+{% set na = "Not Found" %}
+{% if consumer is empty %}
+    <div class="sub-panel last">
+        <div class="sub-panel-body">
+            This individual is not a Loyalty member.
+        </div>
+    </div>
+{% else %}
+    <div class="sub-panel">
+        <div class="sub-panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Member Details</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="pull-right"><span id="consumerStatus">{{ consumer.status }}/{{ consumer.active? 'active' : 'inactive' }}</span> (<a href="{{ path('rapp_loyalty_consumer_update_status', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" data-toggle="ajaxModal" data-target="#ajaxModal">edit</a>)</span>
+                        Member Status
+                    </li>
+
+                    {% if individualAttribute is not empty %}
+                        {% if individualAttribute.member_type is defined %}
+                            <li class="list-group-item">
+                                Member Type <span class="pull-right">{{ individualAttribute.member_type }}</span>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item null-property">
+                                Member Type <span class="pull-right">{{ na }}</span>
+                            </li>
+                        {%  endif %}
+                    {%  endif %}
+
+                    <li class="list-group-item">
+                        <span class="pull-right">{{ consumer.brinkerMemberId }}</span>
+                        Brinker Member ID
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right">{{ consumer.enrollDate }}</span>
+                        Enroll Date
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">MCA Details</h3>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="pull-right"><span id="consumerBasePoints">{{ consumer.basePoints }}</span></span>
+                        Base Points
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right">{{ consumer.pointsExpirationDate }}</span>
+                        Points Expiration Date
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right"><span id="consumerTotalPoints">{{ consumer.totalPoints }}</span></span>
+                        Total Points
+                    </li>
+                </ul>
+            </div>
+
+
+            {% if consumer.plentiCardNumber is not null %}
+            <div class="panel panel-default plenti-details">
+                <div class="panel-heading">
+                    <h3 class="pull-left panel-title">Plenti Details</h3>
+                    <span class="btn-extra-details btn btn-sm btn-primary pull-right" ></span>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Plenti Card Number<span class="pull-right">{{ consumer.plentiCardNumber }}</span>
+                    </li>
+                    <li class="list-group-item">
+                        Phone <span class="pull-right plentiPhoneNumber">{{ consumer.plentiPhoneNumber }}</span>
+                    </li>
+
+
+                    {% if individualAttribute.created is defined %}
+                        <li class="list-group-item">
+                            Link Date <span class="pull-right">{{ individualAttribute.created }}</span>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item null-property">
+                            Link Date <span class="pull-right">{{ na }}</span>
+                        </li>
+                    {%  endif %}
+
+                    <span class="extra-details">
+
+                            {% if individualAttribute.share_plenti_data is defined %}
+                                <li class="list-group-item">
+                                    Data Sharing <span class="pull-right">{{ individualAttribute.share_plenti_data }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Data Sharing <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_participation_status is defined %}
+                                <li class="list-group-item">
+                                    Participation Status <span class="pull-right">{{ individualAttribute.plenti_participation_status }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Participation Status <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_last_name is defined %}
+                                <li class="list-group-item">
+                                    Name <span class="pull-right">{{ individualAttribute.plenti_last_name }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Name <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_dob is defined %}
+                                <li class="list-group-item">
+                                    Date of birth <span class="pull-right">{{ individualAttribute.plenti_dob }}</span>
+                                </li>
+                            {% else %}
+                                 <li class="list-group-item null-property">
+                                    Date of birth <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_gender is defined %}
+                                <li class="list-group-item">
+                                    Gender <span class="pull-right">{{ individualAttribute.plenti_gender }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Gender <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_street is defined %}
+                                <li class="list-group-item">
+                                    Street <span class="pull-right">{{ individualAttribute.plenti_street }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Street <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_city is defined %}
+                                <li class="list-group-item">
+                                    City <span class="pull-right">{{ individualAttribute.plenti_city }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    City <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_zipCode is defined %}
+                                <li class="list-group-item">
+                                    Zip Code <span class="pull-right">{{ individualAttribute.plenti_zipCode }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Zip Code <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_country is defined %}
+                                <li class="list-group-item">
+                                    Country <span class="pull-right">{{ individualAttribute.plenti_country }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Country <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_region is defined %}
+                                <li class="list-group-item">
+                                    Region <span class="pull-right">{{ individualAttribute.plenti_region }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Region <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                            {% if individualAttribute.plenti_email is defined %}
+                                <li class="list-group-item">
+                                    Email <span class="pull-right">{{ individualAttribute.plenti_email }}</span>
+                                </li>
+                            {% else %}
+                                <li class="list-group-item null-property">
+                                    Email <span class="pull-right">{{ na }}</span>
+                                </li>
+                            {%  endif %}
+
+                        </span></ul>
+            </div>
+            {%  endif %}
+
+            {% if consumer.ltoPoints is defined and consumer.ltoPoints is defined %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">LTO Points Details</h3>
+                </div>
+                <ul class="list-group">
+                    {% for lto in consumer.ltoPoints %}
+                    <li class="list-group-item">
+                        <span class="pull-right">
+                            Remaining Points: {{ lto.remainingPoints }}
+                        </span>
+                        {{ lto.name }}
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right">
+                            Original Points: {{ lto.originalPoints }}
+                        </span>
+                        &nbsp;
+                    </li>
+                    <li class="list-group-item">
+                        <span class="pull-right">
+                            End Date: {{ lto.endDate }}
+                        </span>
+                        &nbsp;
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Reward Adjustments
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_add_reward', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-plus-square"></i> Add Reward
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_reward_adjustments', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Reward Adjustments
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Point Adjustments
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_adjust_points', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-plus-square"></i> Adjust Points
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_point_adjustments', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Adjustments
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Loyalty Messages
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ path('rapp_loyalty_consumer_send_message', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-envelope"></i> Send Message
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Loyalty Activity
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ path('rapp_loyalty_consumer_activities', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-signal"></i> View Activity
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Loyalty Visits
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ path('rapp_loyalty_consumer_visits', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-calendar"></i> View Visits
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Point Requests
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_request_points', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnRequestPoints" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-question-circle"></i> Request Points
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_point_requests', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnRequestPoints" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Requests
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Loyalty Offers
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_offers', { brinkerMemberId: app.request.get('brinkerMemberId'), status: 0 }) }}" id="btnOffers" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Active Offers
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_challenges', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnChallenges" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Challenges
+                </a>
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_offers', { brinkerMemberId: app.request.get('brinkerMemberId'), status: 1 }) }}" id="btnOffers" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Expired Offers
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_consumer_rewards', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnRewards" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-folder-open"></i> View Rewards
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sub-panel-divider"></div>
+    <div class="sub-panel last">
+        <div class="sub-panel-title">
+            Account Login
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_change_pin', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnChangePin" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-edit"></i> Change PIN
+                </a>
+            </div>
+            <div class="col-sm-6">
+                <a href="{{ path('rapp_loyalty_change_password', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnChangePin" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                    <i class="fa fa-edit"></i> Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+                    
+    <!-- BEGIN AJAX MODAL -->
+    <div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    </div>
+    <!-- END AJAX MODAL -->
+    <script>
+        jQuery(document).ready(function ($) {
+            $('a[data-toggle="ajaxModal"]').on('click', function (event) {
+                event.preventDefault();
+
+                var target_modal = $(event.currentTarget).data('target');
+                var url = event.currentTarget.href;
+                var modal = $(target_modal);
+                var modalBody = $(target_modal + ' .modal-content');
+
+                modalBody.html('<i class="fa fa-spinner fa-spin"></i>');
+                modal.modal();
+                $.get(url, function (response) {
+                    modalBody.html(response);
+                });
+            });
+
+            if($('.plenti-details .btn-extra-details').hasOwnProperty('length')){
+                initExtraDetails( '.plenti-details' );
+
+                $('.plentiPhoneNumber').text(formatPhoneNumber( $('.plentiPhoneNumber').text() ));
+            }
+        });
+    </script>
+
+{% endif %}

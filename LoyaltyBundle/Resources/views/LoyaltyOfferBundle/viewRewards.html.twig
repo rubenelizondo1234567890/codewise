@@ -1,0 +1,76 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h2 class="modal-title">Select Active Rewards</h2>
+</div>
+<div class="modal-body">
+    {% if entities | length == 0 %}
+        <div class="text-center">There are no active rewards</div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                        <table id="activeRewards" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Sku</th>
+                                <th>Monetary Value</th>
+                                <th>Program Id</th>
+                                <th>Program Name</th>
+                                <th>Start Date</th>
+                                <th>End date</th>
+                                <th>Offer ID</th>
+                                <th>Promo ID</th>
+                                <th>Claimable</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Sku</th>
+                                <th>Monetary Value</th>
+                                <th>Program Id</th>
+                                <th>Program Name</th>
+                                <th>Start Date</th>
+                                <th>End date</th>
+                                <th>Offer ID</th>
+                                <th>Promo ID</th>
+                                <th>Claimable</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td><a href="#" id="reward_{{ entity.id }}" data-dismiss="modal">{{ entity.name }}</a></td>
+                                <td>{{ entity.slug }}</td>
+                                <td>{{ entity.sku }}</td>
+                                <td>{{ entity.monetaryValue }}</td>
+                                <td>{{ entity.programId }}</td>
+                                <td>{{ entity.programName }}</td>
+                                <td>{{ entity.startDate | date("M j, Y", false) }}</td>
+                                <td>{{ entity.endDate | date("M j, Y", false) }}</td>
+                                <td>{{ entity.offerID }}</td>
+                                <td>{{ entity.promoID }}</td>
+                                {% if entity.isClaimable == 1 %}
+                                    <td>Yes</td>
+                                {% else %}
+                                    <td>No</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>

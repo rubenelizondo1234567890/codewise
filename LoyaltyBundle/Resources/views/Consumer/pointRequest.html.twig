@@ -1,0 +1,19 @@
+<h3>Manual Point Request</h3>
+<hr />
+{{ form_start(form, {'attr': {'class': 'form-horizontal'} }) }}
+{{ form_errors(form) }}
+{{ form_row(form.consumer, {'label': 'Loyalty Member'}) }}
+{{ form_row(form.businessDate, {'label': 'Check Date'}) }}
+{{ form_row(form.checkNumber, {'label': 'Check Number'}) }}
+{{ form_row(form.checkTotal, {'label': 'Check Total', 'attr': {'style': 'position: relative; z-index: 0;'} }) }}
+{{ form_row(form.storeNumber, {'label': 'Store Number'}) }}
+{{ form_row(form.loyaltyCheck, {'label': 'Check Header ID', 'attr': {'readonly': null} }) }}
+<div class="form-group">
+    <div class="col-md-3"></div>
+    <div class="col-md-9">
+        <button type="button" class="btn btn-primary" id="prefillForm">Pre-fill with un-matched Check</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+{{ form_rest(form) }}
+{{ form_end(form) }}

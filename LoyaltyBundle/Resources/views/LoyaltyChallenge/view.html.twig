@@ -1,0 +1,67 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">View Challenge Id: {{ entity.id }}</h4>
+</div>
+<div class="modal-body">
+    {% if entity | length == 0 %}
+        <div class="text-center">There is no challenge associated with this id</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr></tr>
+            </thead>
+            <tbody>
+            <tr><td>Name:</td><td>{{ entity.name }}</td><td></td><td></td></tr>
+            <tr><td>Sku:</td><td>{{ entity.sku }}<td><td></td><td></td></tr>
+            <tr><td>Summary:</td><td>{{ entity.summary }}<td><td></td><td></td></tr>
+            <tr>
+                <td>Web:</td>
+                <td>{{ entity.webDescription }}</td>
+                <td>{{ entity.webDisclaimer }}</td>
+                <td>{{ entity.webImage }}</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>{{ entity.emailDescription }}</td>
+                <td>{{ entity.emailDisclaimer }}</td>
+                <td>{{ entity.emailImage }}</td>
+            </tr>
+            <tr>
+                <td>Ziosk:</td>
+                <td>{{ entity.zioskDescription }}</td>
+                <td>{{ entity.zioskDisclaimer }}</td>
+                <td>{{ entity.zioskImage }}</td>
+            </tr>
+            <tr><td></td><td>{{ entity.sequence }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.minPoints }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.maxPoints }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.earnLimit }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.offerLimit }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.startDate | date("M j, Y", false) }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.endDate | date("M j, Y", false) }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.startDelay }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.duration }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.slug }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.active }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.staleHoldout }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.exclude }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.multiplier }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.campaignId }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.category }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.categoryId }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.rewardId }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.rewardName }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.rewardValidDuration }}</td><td></td><td></td></tr>
+            <tr><td></td><td>{{ entity.challengeRequirements0 }}</td><td></td><td></td></tr>
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->
+<!--
+[challengeRequirements0:protected] => CategoryRequirement [loyaltyChallengeRequirements0:protected] => RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements Object ( [id:protected] => 3 [quantity:protected] => [count:protected] => [minPoints:protected] => [amount:protected] => [shift:protected] => [survey:protected] => [takeout:protected] => [weekdayMin:protected] => [weekdayMax:protected] => [numVisits:protected] => ) [challengeRequirements1:protected] => [loyaltyChallengeRequirements1:protected] => [challengeRequirements2:protected] => [loyaltyChallengeRequirements2:protected] => )
+-->

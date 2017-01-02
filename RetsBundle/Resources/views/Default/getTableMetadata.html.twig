@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RetsBundle</title>
+    </head>
+    <body>
+        <h1>Rets Bundle</h1>
+        <h3> Sample Search Results (Showing 3 out of 100+</h3>
+<p>
+Type => Property<br/>
+MLSClass => RESI<br/>
+QueryString => (ListPrice=8000000+)<br/>
+</p><br/><br/>
+
+        <ul>
+{% for entity in entities %}
+
+<li>
+	<ul>
+		<li>MLS #: {{ entity.MLSNumber }}</li>
+		<li>Address: {{ entity.StreetNumber }} {{ entity.StreetName }} {{ entity.StreetSuffix }}</li>
+		<li>City: {{ entity.City }} State: {{ entity.StateOrProvince }}</li>
+		<li>Zip: {{ entity.PostalCode }}</li>
+		<li>Phone: {{ entity.ShowingPhone }}</li>		
+		<li>Status: {{ entity.Status }}</li>
+	</ul>
+</li><br/>
+{% endfor %}
+</ul>
+    </body>
+</html>

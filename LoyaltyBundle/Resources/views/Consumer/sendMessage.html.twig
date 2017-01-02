@@ -1,0 +1,39 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Send Message for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    <div class="row-fluid">
+        {{ form_start(form, { attr: { role: 'form' } }) }}
+        {{ form_row(form.type) }}
+        <div class="form-group">
+            <div class="col-md-3"></div>
+            <div class="col-md-9">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->
+<script>
+    $('form').submit(function (e) {
+        e.preventDefault();
+        var url = '{{ path('rapp_loyalty_consumer_send_message', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}';
+        var data = $(this).serialize();
+        $.post(url, data, function (data) {
+            var modalBody = $('#ajaxModal .modal-body');
+            if (data.success) {
+                modalBody.css('color', 'green');
+                modalBody.html('Message Send Successful!');
+            } else {
+                modalBody.css('color', 'red');
+                modalBody.html('Message Send Failed!');
+            }
+        });
+    });
+</script>

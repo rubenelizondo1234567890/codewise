@@ -1,0 +1,35 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Point Adjustments for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    {% if pointAdjustments | length == 0 %}
+        <div class="text-center">This Loyalty member has no point adjustments.</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Points</th>
+                    <th>Notes</th>
+                    <th>Date</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pointAdjustment in pointAdjustments %}
+                    <tr>
+                        <td>{{ pointAdjustment.points }}</td>
+                        <td>{{ pointAdjustment.notes }}</td>
+                        <td>{{ pointAdjustment.date | date('Y-m-d h:i A', dashboard.timezone) }}</td>
+                        <td>{{ pointAdjustment.user.username }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

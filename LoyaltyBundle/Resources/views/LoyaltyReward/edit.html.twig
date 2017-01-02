@@ -1,0 +1,154 @@
+{% extends 'RAPPCRMBundle::layout.html.twig' %}
+{%block pageTitle %}
+Edit Loyalty Reward
+{% endblock pageTitle %}
+
+{% block content %}
+{% if error==0 %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-reorder"></i>Edit Reward: {{ entity.id }}
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <input type="hidden" value="{{ entity.id }}" id="LoyaltyReward_entityId" name="LoyaltyReward[entityId]"/>
+                {{ form_start(form) }}
+                    <div class="form-body">
+                        {% for field in form %}
+                            {% if field.vars.name == 'endDate' %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckdates" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> Date range is invalid.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% elseif field.vars.name == "slug" %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckSlug" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> This Slug is already in use.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% elseif field.vars.name == "sku" %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckSku" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> This Sku is already in use.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% else %}
+                                {{ form_row(field) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn blue" type="submit">Submit</button>
+                        <button class="btn default" type="button" onclick="history.go(-1);">Cancel</button>
+                    </div>
+                    
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</ul>
+{% elseif error==1 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> This campaign Id is already in use.<br />
+            Please use another one.<br/>
+        </div>
+    </div>
+</div>
+{% elseif error==2 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> This Sku is already in use.<br />
+            Please use another one.<br/>
+        </div>
+    </div>
+</div>
+{% elseif error==3 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> A problem has been occurred while processing you request.<br />
+            Please try again or contact your systems administrator.<br/>
+        </div>
+    </div>
+</div>
+{% elseif error==4 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> This Slug is already in use.<br />
+            Please use another one.<br/>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+{% block readyScripts %}
+
+$(function() {
+    $( "#LoyaltyReward_startDate" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: +2
+            });
+    $( "#LoyaltyReward_endDate" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: +3
+            });
+});
+
+$("#msgCheckSlug").hide();
+$("#msgCheckSku").hide();
+$("#msgCheckdates").hide();
+
+$( "#LoyaltyReward_startDate" ).focus(function(){
+    $("#msgCheckdates").hide();
+});
+
+$( "#LoyaltyReward_endDate" ).focus(function(){
+    $("#msgCheckdates").hide();
+});
+
+$( "#LoyaltyReward_sku" ).focus(function(){
+    $("#msgCheckSku").hide();
+});
+
+$( "#LoyaltyReward_slug" ).focus(function(){
+    $("#msgCheckSlug").hide();
+});
+
+$("#LoyaltyReward_sku").blur(function(){
+
+    $.post("{{ path('LoyaltyRewardcheckSkuEdit') }}",$('#LoyaltyReward_sku, #LoyaltyReward_entityId').serialize())
+        .done(function( data ) {
+            if(data.success == 0){$("#msgCheckSku").show();}
+        });  
+});
+
+$("#LoyaltyReward_slug").blur(function(){
+
+    $.post("{{ path('LoyaltyRewardcheckSlugEdit') }}",$('#LoyaltyReward_slug, #LoyaltyReward_entityId').serialize())
+        .done(function( data ) {
+            if(data.success == 0){$("#msgCheckSlug").show();}
+        });  
+});
+
+$( "form" ).submit(function( event ) {
+    var startDate = document.getElementById('LoyaltyReward_startDate');
+    var endDate =  document.getElementById('LoyaltyReward_endDate');
+    startDateObj = new Date(startDate.value);
+    endDateObj = new Date(endDate.value);
+    start = startDateObj.getTime();
+    end = endDateObj.getTime();
+    if (start>end){$("#msgCheckdates").show();event.preventDefault();}else{$("#msgCheckdates").hide();}
+});
+{% endblock %}

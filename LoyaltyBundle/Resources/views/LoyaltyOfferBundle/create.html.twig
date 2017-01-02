@@ -1,0 +1,366 @@
+{% extends 'RAPPCRMBundle::layout.html.twig' %}
+{%block pageTitle %}
+Add New Loyalty Offer Bundle
+{% endblock pageTitle %}
+
+{% block content %}
+{% if error==0 %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-reorder"></i>Add New Offer Bundle
+                </div>
+            </div>
+            <div class="portlet-body form">
+                {{ form_start(form) }}
+                    <div class="form-body">
+                        {% for field in form %}
+                            {% if field.vars.name == 'endDate' %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckdates" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> Date range is invalid.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% elseif field.vars.name == "desc" %}
+                                {{ form_row(field) }}
+                                    <div id="msgCheckSlug" class="alert alert-danger fade in">
+                                        <strong>Error!</strong> This Slug is already in use.<br />
+                                        Please try other one.<br/>
+                                    </div>
+                            {% elseif field.vars.name == "offerBundleItems" %}
+                                <div id="bundleItem-fields-list" data-prototype="{{ form_widget(form.offerBundleItems.vars.prototype)|e }}">
+                                    {% for bundleItemField in form.offerBundleItems %}
+                                        <div class="alert-info fade in">
+                                            {{ form_errors(bundleItemField) }}
+                                            {{ form_widget(bundleItemField) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <a href="#" id="add-another-bundleItem" class="btn btn-default">Add Bundle Item</a>
+                                <a href="#" id="remove-last-bundleItem" class="btn btn-default">Remove Bundle Item</a>
+                            {% else %}
+                                {{ form_row(field) }}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div id="msgCheckWeekDays" class="alert alert-danger fade in">
+                        <strong>Error!</strong> Weekday Max. must be equal or greater than Weekday Min.<br />
+                            Please try again.<br/>
+                    </div>
+                    <div id="msgCheckBundle" class="alert alert-danger fade in">
+                        <strong>Error!</strong> The form needs to have at least one Bundle Item.<br />
+                            Please try again.<br/>
+                    </div>
+                    <div id="msgCheckType" class="alert alert-danger fade in">
+                        <strong>Error!</strong> Please select a Bundle Type and try again<br />
+                    </div>
+                    <div id="msgItemsValues" class="alert alert-danger fade in">
+                        <strong>Error!</strong> Values for at least one bundle item must be filled.<br />
+                    </div>
+                    <div id="msgWeightTotal" class="alert alert-danger fade in">
+                        <strong>Error!</strong> Weight values must equal 100.<br />
+                            Please change and submit again.<br/>
+                    </div>
+                    <div id="msgMinBundleCount" class="alert alert-danger fade in">
+                        <strong>Error!</strong> You need to create at least two Bundle Items<br />
+                            Please change and submit again.<br/>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn blue" type="submit">Submit</button>
+                        <button class="btn default" type="button" onclick="history.go(-1);">Cancel</button>
+                    </div>
+                    
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% elseif error==1 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> This campaign Id is already in use.<br />
+            Please use another one.<br/>
+        </div>
+    </div>
+</div>
+{% elseif error==2 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> This Sku is already in use.<br />
+            Please use another one.<br/>
+        </div>
+    </div>
+</div>
+{% elseif error==3 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> A problem has been occurred while processing you request.<br />
+            Please try again or contact your systems administrator.<br/>
+        </div>
+    </div>
+</div>
+{% elseif error==4 %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> This Slug is already in use.<br />
+            Please use another one.<br/>
+        </div>
+    </div>
+</div>
+{% endif %}
+<script>
+  // keep track of how many bundleItem fields have been rendered
+    var bundleItemCount = '{{ form.offerBundleItems|length }}';
+    var challenges = new Array();
+    var rewards = new Array();
+    var offerBundles = new Array();
+    var bundleType = '';
+    {% for key, challenge in challenges %}
+        challenges[{{ key }}] = '{{ challenge }}';
+    {% endfor %}
+    {% for key, reward in rewards %}
+        rewards[{{ key }}] = '{{ reward }}';
+    {% endfor %}
+    {% for key, offerBundle in offerBundles %}
+        offerBundles[{{ key }}] = '{{ offerBundle }}';
+    {% endfor %}
+</script>
+{% endblock content %}
+{% block readyScripts %}
+
+$("#collectionLoyaltyOfferBundle_offerBundleItems_form_group").parents(".form-group").hide();
+
+$( "#LoyaltyOfferBundle_offerBundleItems_0_bundleItem" ).focus(function(){$("#msgItemsValues").hide();});
+$( "#LoyaltyOfferBundle_offerBundleItems_0_offerId" ).focus(function(){$("#msgItemsValues").hide();});
+$( "#LoyaltyOfferBundle_offerBundleItems_0_order" ).focus(function(){$("#msgItemsValues").hide();});
+$( "#LoyaltyOfferBundle_offerBundleItems_0_weight" ).focus(function(){$("#msgItemsValues").hide();});
+
+$('#LoyaltyOfferBundle_typeId').change(function( event ) {
+    $("#msgCheckType").hide();
+    if (bundleItemCount == 0) {
+        bundleType = $('option:selected', $(this)).text();
+    }
+    else {
+        $("#msgCheckType").show();
+    }
+});
+
+$('#add-another-bundleItem').click(function( event ) {
+            $("#msgCheckType").hide();
+            var requirement = document.getElementById('LoyaltyOfferBundle_typeId')
+                                .options[document.getElementById('LoyaltyOfferBundle_typeId').selectedIndex]
+                                .text;
+            if (requirement == 'Select a Type...') {
+                $("#msgCheckType").show();
+            }
+            else {
+                var bundleItemList = $('#bundleItem-fields-list');
+                var newWidget = bundleItemList.attr('data-prototype');            
+                newWidget = newWidget.replace(/__name__/g, bundleItemCount);            
+                var divId = '<div id="LoyaltyOfferBundle_offerBundleItems_' + bundleItemCount + '" class="alert alert-info fade in"></div>';
+                var newLi = $(divId).html(newWidget);
+                newLi.appendTo(bundleItemList);
+                var orderId = 'LoyaltyOfferBundle_offerBundleItems_' + bundleItemCount + '_order';
+                var weightId = 'LoyaltyOfferBundle_offerBundleItems_' + bundleItemCount + '_weight';
+                $('#'+orderId).val(bundleItemCount);
+                var bundleItemField = 'LoyaltyOfferBundle_offerBundleItems_' + bundleItemCount + '_bundleItem';
+                $('#'+bundleItemField).empty();
+                switch (bundleType) {
+                    case 'Challenge Choice':
+                        $('#'+bundleItemField).append( $('<option selected="selected"></option>').val('').html('Select a Type...'));
+                        $('#'+bundleItemField).append( $('<option></option>').val(0).html('Challenge'));
+                        $('#'+weightId).val(1);
+                        $('#'+weightId).parents(".form-group").hide();
+                    break;
+                    case 'Reward Choice':
+                        $('#'+bundleItemField).append( $('<option selected="selected"></option>').val('').html('Select a Type...'));
+                        $('#'+bundleItemField).append( $('<option></option>').val(1).html('Reward'));
+                        $('#'+bundleItemField).append( $('<option></option>').val(2).html('Reward Mystery Box'));
+                        $('#'+weightId).val(1);
+                        $('#'+weightId).parents(".form-group").hide();
+                    break;
+                    case 'Reward Mystery Box':
+                        $('#'+bundleItemField).append( $('<option selected="selected"></option>').val('').html('Select a Type...'));
+                        $('#'+bundleItemField).append( $('<option></option>').val(1).html('Reward'));
+                        $('#'+weightId).val();
+                        $('#'+weightId).parents(".form-group").show();
+                    break;
+            }
+            $('#LoyaltyOfferBundle_typeId').prop({disabled: true});
+            var itemNum = bundleItemCount;
+            if(itemNum > 0){
+                var top = $('#LoyaltyOfferBundle_offerBundleItems_' + itemNum).offset().top;
+                $('html, body').animate({scrollTop: top, scrollLeft: 0}, 3000);
+            }
+            bundleItemCount++;
+            }
+        });
+
+$('#remove-last-bundleItem').click(function(e) {
+    var lastBundleItem = bundleItemCount - 1;
+    if (lastBundleItem > -1) {
+        var lastItemDiv = '#LoyaltyOfferBundle_offerBundleItems_' + lastBundleItem;
+        $(lastItemDiv).remove();
+        bundleItemCount--;
+    }
+    if (lastBundleItem == 0) {
+        $('#LoyaltyOfferBundle_typeId').prop({disabled: false});
+    }
+    
+});
+
+$('#bundleItem-fields-list').change(function(event) {
+        var element = event.target.id;
+        if(element.substr(-10) == 'bundleItem'){
+            var pos1 = element.indexOf('_');
+            var pos2 = element.indexOf('_', pos1+1);
+            var pos3 = element.indexOf('_', pos2+1);
+            var itemNum = element.substr(pos2+1, pos3-pos2-1);
+            $('#'+element).click(function(){
+                var optionSel = $('option:selected', $(this)).text();
+                switch (optionSel) {
+                    case 'Challenge':                                       
+                        var OfferIdField = 'LoyaltyOfferBundle_offerBundleItems_' + itemNum + '_offerId';
+                        $('#'+OfferIdField).empty();
+                        $('#'+OfferIdField).append( $('<option selected="selected"></option>').val('').html('Select...'));
+                        $.each(challenges, function(val, text) {
+                            if (text){
+                                $('#'+OfferIdField).append( $('<option></option>').val(val).html(text) )
+                            }
+                        });
+                    break;
+                    case 'Reward':
+                        var OfferIdField = 'LoyaltyOfferBundle_offerBundleItems_' + itemNum + '_offerId';
+                        $('#'+OfferIdField).empty();
+                        $('#'+OfferIdField).append( $('<option selected="selected"></option>').val('').html('Select...'));
+                        $.each(rewards, function(val, text) {
+                            if (text){
+                                $('#'+OfferIdField).append( $('<option></option>').val(val).html(text) )
+                            }
+                        });
+                    break;
+                    case 'Reward Mystery Box':
+                        var OfferIdField = 'LoyaltyOfferBundle_offerBundleItems_' + itemNum + '_offerId';
+                        $('#'+OfferIdField).empty();
+                        $('#'+OfferIdField).append( $('<option selected="selected"></option>').val('').html('Select...'));
+                        $.each(offerBundles, function(val, text) {
+                            if (text){
+                                $('#'+OfferIdField).append( $('<option></option>').val(val).html(text) )
+                            }
+                        });
+                    break;
+                    case 'Select a Type...':
+                        var OfferIdField = 'LoyaltyOfferBundle_offerBundleItems_' + itemNum + '_offerId';
+                        $('#'+OfferIdField).empty();
+                        $('#'+OfferIdField).append( $('<option selected="selected"></option>').val('').html('Not a valid Selection'));
+                    break;
+                }
+            });
+        }
+    });
+
+$(function() {
+    $( "#LoyaltyOfferBundle_startDate" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: +2
+            });
+    $( "#LoyaltyOfferBundle_endDate" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                minDate: +3
+            });
+});
+
+$("#msgCheckSlug").hide();
+$("#msgCheckdates").hide();
+$("#msgCheckWeekDays").hide();
+$("#msgCheckBundle").hide();
+$("#msgCheckType").hide();
+$("#msgItemsValues").hide();
+$("#msgWeightTotal").hide();
+$("#msgMinBundleCount").hide();
+
+$( "#LoyaltyOfferBundle_desc" ).focus(function(){
+    $("#msgCheckSlug").hide();
+});
+
+$( "#LoyaltyOfferBundle_startDate" ).focus(function(){
+    $("#msgCheckdates").hide();
+});
+
+$("#LoyaltyOfferBundle_desc").blur(function(){
+
+    $.post("{{ path('LoyaltyOfferBundlecheckSlug') }}",$('#LoyaltyOfferBundle_desc').serialize())
+        .done(function( data ) {
+            if(data.success == 0){$("#msgCheckSlug").show();}
+        });  
+});
+
+$( "#LoyaltyOfferBundle_active" ).focus(function(){
+    var startDate = document.getElementById('LoyaltyOfferBundle_startDate');
+    var endDate =  document.getElementById('LoyaltyOfferBundle_endDate');
+    startDateObj = new Date(startDate.value);
+    endDateObj = new Date(endDate.value);
+    start = startDateObj.getTime();
+    end = endDateObj.getTime();
+    if (start>end){$("#msgCheckdates").show();}else{$("#msgCheckdates").hide();}
+});
+
+$( "form" ).submit(function( event ) {
+
+    $('#LoyaltyOfferBundle_typeId').prop({disabled: false});
+    
+    var requirement = document.getElementById('LoyaltyOfferBundle_typeId')
+        .options[document.getElementById('LoyaltyOfferBundle_typeId').selectedIndex]
+        .text; 
+
+    if (Number(bundleItemCount) <= 0) {
+        $("#msgCheckBundle").show();
+        event.preventDefault();
+    } else {
+        var bundleItem = document.getElementById('LoyaltyOfferBundle_offerBundleItems_0_bundleItem').value;
+        var offerId = document.getElementById('LoyaltyOfferBundle_offerBundleItems_0_offerId').value;
+        var order = document.getElementById('LoyaltyOfferBundle_offerBundleItems_0_order').value;
+        var weight = document.getElementById('LoyaltyOfferBundle_offerBundleItems_0_weight').value;
+
+        if (!bundleItem || !offerId || !order || !weight) {
+            $("#msgItemsValues").show();
+            event.preventDefault();
+        } 
+    }
+
+    if (requirement == 'Select a Type...') {
+        $("#msgCheckType").show();
+        event.preventDefault();
+    }
+
+    var i = 0;
+    var weightTotal = 0;
+    while (i < bundleItemCount){
+        var weightId = 'LoyaltyOfferBundle_offerBundleItems_' + i + '_weight';
+        weightTotal += parseFloat($('#'+weightId).val());
+        i++;
+    }
+
+    if ( bundleType == 'Reward Mystery Box' && weightTotal != 100) {
+        $("#msgWeightTotal").show();
+        event.preventDefault();
+    }
+
+    if (bundleItemCount < 2) {
+        $("#msgMinBundleCount").show();
+        event.preventDefault();
+    };
+
+});
+
+{% endblock %}

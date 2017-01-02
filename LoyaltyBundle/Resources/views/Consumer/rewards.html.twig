@@ -1,0 +1,48 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Rewards for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+</div>
+<div class="modal-body">
+    {% if rewards | length == 0 %}
+        <div class="text-center">This Loyalty member has no rewards.</div>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Points</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Expire Date</th>
+                    <th>Redeem Date</th>
+                    <th>Scan Date</th>
+                    <th>Org. #</th>
+                    <th>Check #</th>
+                    <th>Origin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rewards %}
+                    {% set colors = ['green', 'blue', 'goldenrod', 'gray'] %}
+                    <tr style="color: {{ colors[r.statusID - 1] }}">
+                        <td>{{ r.name }}</td>
+                        <td>{{ r.points }}</td>
+                        <td>{{ r.status | capitalize }}</td>
+                        <td>{{ r.createDate | date('m-d-Y', false) }}</td>
+                        <td>{{ r.expireDate | date('m-d-Y', false) }}</td>
+                        <td>{{ r.redeemDate | date('m-d-Y', false) }}</td>
+                        <td>{{ r.scanDate | date('m-d-Y', false) }}</td>
+                        <td>{{ r.organization_no }}</td>
+                        <td>{{ r.check_no }}</td>
+                        <td>{{ r.origin }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
+<!-- ajaxModal content -->

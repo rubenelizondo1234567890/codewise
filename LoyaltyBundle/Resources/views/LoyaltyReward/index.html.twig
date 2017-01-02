@@ -1,0 +1,154 @@
+{% extends 'RAPPCRMBundle::layout.html.twig' %}
+{%block pageTitle %}
+Loyalty Rewards
+{% endblock pageTitle %}
+
+{% block content %}
+{% if error==0 %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="tabbable tabbable-custom tabbable-full-width">
+            <ul class="nav nav-tabs">
+                <li class="{% if status==0 %}active{% endif %}">
+                    <a href="{{ path('LoyaltyRewards', {'status' : 0}) }}">
+                        Draft
+                    </a>
+                </li>
+                <li class="{% if status==1 %}active{% endif %}">
+                    <a href="{{ path('LoyaltyRewards', {'status' : 1}) }}">
+                        Active
+                    </a>
+                </li>
+                <li class="{% if status==2 %}active{% endif %}">
+                    <a href="{{ path('LoyaltyRewards', {'status' : 2}) }}">
+                        Archive
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+                <div class="row">
+                    <div class="pull-right margin-bottom-10 margin-right-10">
+                        <a href="{{path("LoyaltyRewardCreate")}}" class="btn btn-default blue">Add New Reward</a>
+                    </div>
+                </div><br />
+                <div class="tab-pane active">
+                    <div class="table-responsive">
+                        <table id="RewardsTable" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Sku</th>
+                                <th>Monetary Value</th>
+                                <th>Program Id</th>
+                                <th>Program Name</th>
+                                <th>Start Date</th>
+                                <th>End date</th>
+                                <th>Offer ID</th>
+                                <th>Promo ID</th>
+                                <th>Claimable</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Sku</th>
+                                <th>Monetary Value</th>
+                                <th>Program Id</th>
+                                <th>Program Name</th>
+                                <th>Start Date</th>
+                                <th>End date</th>
+                                <th>Offer ID</th>
+                                <th>Promo ID</th>
+                                <th>Claimable</th>
+                                <th>Actions</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td>{{ entity.name }}</td>
+                                <td>{{ entity.slug }}</td>
+                                <td>{{ entity.sku }}</td>
+                                <td>{{ entity.monetaryValue }}</td>
+                                <td>{{ entity.programId }}</td>
+                                <td>{{ entity.programName }}</td>
+                                <td>{{ entity.startDate | date("M j, Y", false) }}</td>
+                                <td>{{ entity.endDate | date("M j, Y", false) }}</td>
+                                <td>{{ entity.offerID }}</td>
+                                <td>{{ entity.promoID }}</td>
+                                {% if entity.isClaimable == 1 %}
+                                    <td>Yes</td>
+                                {% else %}
+                                    <td>No</td>
+                                {% endif %}
+                                {% if status==0 %}
+                                <td>
+                                    <a class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardEdit', { 'id': entity.id }) }}">Edit</a>
+                                    <a class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardDelete', { 'id': entity.id }) }}">Delete</a>
+                                    <a class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardActivate', { 'id': entity.id }) }}">Activate</a>
+                                    <a  class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardView', { 'id': entity.id }) }}" data-toggle="ajaxModal" data-target="#ajaxModal">View</a>
+                                </td>
+                                {% elseif status==1 %}
+                                <td>
+                                    <a class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardView', { 'id': entity.id }) }}" data-toggle="ajaxModal" data-target="#ajaxModal">View</a>
+                                </td>
+                                {% elseif status==2 %}
+                                <td>
+                                    <a class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardDelete', { 'id': entity.id }) }}">Delete</a>
+                                    <a class="btn default btn-xs green-stripe" href="{{ path('LoyaltyRewardView', { 'id': entity.id }) }}" data-toggle="ajaxModal" data-target="#ajaxModal">View</a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>                    
+    <!-- BEGIN AJAX MODAL -->
+    <div class="modal fade" id="ajaxModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </div>
+    </div>
+    <!-- END AJAX MODAL -->
+{% else %}
+<div class="row">
+    <div class="col-md-12">      
+        <div class="alert alert-danger fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Error!</strong> A problem has been occurred while processing you request.<br />
+            Please try again or contact your systems administrator.<br/>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock content %}
+{% block readyScripts %}
+    $('#RewardsTable').DataTable();
+    $('a[data-toggle="ajaxModal"]').on('click', function (event) {
+                event.preventDefault();
+
+                var target_modal = $(event.currentTarget).data('target');
+                var url = event.currentTarget.href;
+                var modal = $(target_modal);
+                var modalBody = $(target_modal + ' .modal-content');
+
+                modalBody.html('<i class="fa fa-spinner fa-spin"></i>');
+                modal.modal();
+                $.get(url, function (response) {
+                    modalBody.html(response);
+                });
+            });
+{% endblock %}

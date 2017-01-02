@@ -1,0 +1,23 @@
+<div id="loyalty_overview" class="portlet box green panel-clean-slate">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-reorder"></i>Loyalty
+        </div>
+    </div>
+    <div id="loyalty_overview_body" class="sub-panel">
+        <div class="sub-panel-body">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script>
+    jQuery(document).ready(function () {
+        var url = '{{ url('rapp_loyalty_consumer_overview', { brinkerMemberId: brinkerMemberId }) }}';
+        $.get(url, null, function (data) {
+            $('#loyalty_overview_body').empty();
+            $('#loyalty_overview').append(data);
+        });
+    });
+</script>

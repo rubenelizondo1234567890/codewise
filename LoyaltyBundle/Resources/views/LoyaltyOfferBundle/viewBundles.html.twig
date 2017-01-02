@@ -1,0 +1,54 @@
+<!-- ajaxModal content -->
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    <h2 class="modal-title">Select Active Offer Bundles</h2>
+</div>
+<div class="modal-body">
+    {% if entities | length == 0 %}
+        <div class="text-center">There are no active offer bundles</div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                        <table id="activeBundles" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>End date</th>
+                                <th>Type Name</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>End date</th>
+                                <th>Type Name</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for entity in entities %}
+                            <tr>
+                                <td>{{ entity.id }}</td>
+                                <td><a href="#" id="bundle_{{ entity.id }}" data-dismiss="modal">{{ entity.name }}</a></td>
+                                <td>{{ entity.desc }}</td>
+                                <td>{{ entity.startDate | date("M j, Y", false) }}</td>
+                                <td>{{ entity.endDate | date("M j, Y", false) }}</td>
+                                <td>{{ entity.typeName }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">Close</button>
+</div>
