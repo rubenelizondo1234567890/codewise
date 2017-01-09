@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 class Consumer
 {
@@ -8,7 +8,7 @@ class Consumer
     /**
      * @var integer
      */
-    private $brinkerMemberId;
+    private $codewiseMemberId;
 
     /**
      * @var string
@@ -94,14 +94,14 @@ class Consumer
 
     private $active;
     
-    public function getBrinkerMemberId()
+    public function getcodewiseMemberId()
     {
-        return $this->brinkerMemberId;
+        return $this->codewiseMemberId;
     }
 
-    public function setBrinkerMemberId($brinkerMemberId)
+    public function setcodewiseMemberId($codewiseMemberId)
     {
-        $this->brinkerMemberId = $brinkerMemberId;
+        $this->codewiseMemberId = $codewiseMemberId;
     }
 
     public function getStatus()

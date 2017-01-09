@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 <script>
     jQuery(document).ready(function () {
-        var url = '{{ url('rapp_loyalty_consumer_overview', { brinkerMemberId: brinkerMemberId }) }}';
+        var url = '{{ url('codewise_loyalty_consumer_overview', { codewiseMemberId: codewiseMemberId }) }}';
         $.get(url, null, function (data) {
             $('#loyalty_overview_body').empty();
             $('#loyalty_overview').append(data);

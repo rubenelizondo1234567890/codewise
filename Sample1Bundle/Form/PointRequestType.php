@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Form;
+namespace codewise\Bundle\LoyaltyBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
@@ -15,7 +15,7 @@ class PointRequestType extends AbstractType
         $transformer = new DateTimeToStringTransformer(null, null, 'Y-m-d');
 
         $builder
-                ->add('brinkerMemberId', null, array('required' => true))
+                ->add('codewiseMemberId', null, array('required' => true))
                 ->add($builder->create('businessDate', 'date', array(
                             'attr' => array(
                                 'style' => 'width: auto',
@@ -35,7 +35,7 @@ class PointRequestType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'RAPP\Bundle\LoyaltyBundle\Model\PointRequest',
+            'data_class' => 'codewise\Bundle\LoyaltyBundle\Model\PointRequest',
             'csrf_protection' => false,
         ));
     }

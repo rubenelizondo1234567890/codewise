@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 use JMS\Serializer\Annotation as JMS;
 
@@ -286,7 +286,7 @@ class LoyaltyChallenge
 
     /**
      * @var loyaltyChallengeRequirements
-     * @JMS\Type("RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements")
+     * @JMS\Type("codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements")
      * @JMS\SerializedName("loyaltyChallengeRequirements0")
      */
     protected $loyaltyChallengeRequirements0;
@@ -300,7 +300,7 @@ class LoyaltyChallenge
 
     /**
      * @var loyaltyChallengeRequirements
-     * @JMS\Type("RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements")
+     * @JMS\Type("codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements")
      * @JMS\SerializedName("loyaltyChallengeRequirements1")
      */
     protected $loyaltyChallengeRequirements1;
@@ -314,7 +314,7 @@ class LoyaltyChallenge
 
     /**
      * @var loyaltyChallengeRequirements
-     * @JMS\Type("RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements")
+     * @JMS\Type("codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallengeRequirements")
      * @JMS\SerializedName("loyaltyChallengeRequirements2")
      */
     protected $loyaltyChallengeRequirements2;

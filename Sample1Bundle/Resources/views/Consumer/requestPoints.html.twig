@@ -1,13 +1,13 @@
 <!-- ajaxModal content -->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <h4 class="modal-title">Request Points for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+    <h4 class="modal-title">Request Points for Loyalty Member #{{ app.request.get('codewiseMemberId') }}</h4>
 </div>
 <div class="modal-body">
     <div class="row-fluid">
         {{ form_start(form, {'attr': {'class': 'form-horizontal'} }) }}
         {{ form_errors(form) }}
-        {{ form_row(form.brinkerMemberId, {'label': 'Brinker Member ID', 'attr': {'readonly': null } }) }}
+        {{ form_row(form.codewiseMemberId, {'label': 'codewise Member ID', 'attr': {'readonly': null } }) }}
         {{ form_row(form.businessDate, {'label': 'Business Date'}) }}
         {{ form_row(form.checkNumber, {'label': 'Check Number'}) }}
         {{ form_row(form.checkTotal, {'label': 'Check Total', 'attr': {'style': 'position: relative; z-index: 0;'} }) }}
@@ -30,7 +30,7 @@
     $('.datepicker').datepicker({dateFormat: 'mm/dd/yy'});
     $('form').submit(function (e) {
         e.preventDefault();
-        var url = '{{ path('rapp_loyalty_consumer_request_points', {'brinkerMemberId': app.request.get('brinkerMemberId') }) }}';
+        var url = '{{ path('codewise_loyalty_consumer_request_points', {'codewiseMemberId': app.request.get('codewiseMemberId') }) }}';
         var data = $(this).serialize();
         $.post(url, data, function (data) {
             var modalBody = $('#ajaxModal .modal-body');

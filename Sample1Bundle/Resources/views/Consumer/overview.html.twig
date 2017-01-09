@@ -14,7 +14,7 @@
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="pull-right"><span id="consumerStatus">{{ consumer.status }}/{{ consumer.active? 'active' : 'inactive' }}</span> (<a href="{{ path('rapp_loyalty_consumer_update_status', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" data-toggle="ajaxModal" data-target="#ajaxModal">edit</a>)</span>
+                        <span class="pull-right"><span id="consumerStatus">{{ consumer.status }}/{{ consumer.active? 'active' : 'inactive' }}</span> (<a href="{{ path('codewise_loyalty_consumer_update_status', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" data-toggle="ajaxModal" data-target="#ajaxModal">edit</a>)</span>
                         Member Status
                     </li>
 
@@ -31,8 +31,8 @@
                     {%  endif %}
 
                     <li class="list-group-item">
-                        <span class="pull-right">{{ consumer.brinkerMemberId }}</span>
-                        Brinker Member ID
+                        <span class="pull-right">{{ consumer.codewiseMemberId }}</span>
+                        codewise Member ID
                     </li>
                     <li class="list-group-item">
                         <span class="pull-right">{{ consumer.enrollDate }}</span>
@@ -243,12 +243,12 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_add_reward', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_add_reward', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-plus-square"></i> Add Reward
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_reward_adjustments', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_reward_adjustments', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Reward Adjustments
                 </a>
             </div>
@@ -261,12 +261,12 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_adjust_points', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_adjust_points', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-plus-square"></i> Adjust Points
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_point_adjustments', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_point_adjustments', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Adjustments
                 </a>
             </div>
@@ -279,7 +279,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <a href="{{ path('rapp_loyalty_consumer_send_message', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_send_message', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-envelope"></i> Send Message
                 </a>
             </div>
@@ -292,7 +292,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <a href="{{ path('rapp_loyalty_consumer_activities', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_activities', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-signal"></i> View Activity
                 </a>
             </div>
@@ -305,7 +305,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <a href="{{ path('rapp_loyalty_consumer_visits', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_visits', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-calendar"></i> View Visits
                 </a>
             </div>
@@ -318,12 +318,12 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_request_points', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnRequestPoints" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_request_points', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" id="btnRequestPoints" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-question-circle"></i> Request Points
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_point_requests', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnRequestPoints" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_point_requests', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" id="btnRequestPoints" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Requests
                 </a>
             </div>
@@ -337,24 +337,24 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_offers', { brinkerMemberId: app.request.get('brinkerMemberId'), status: 0 }) }}" id="btnOffers" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_offers', { codewiseMemberId: app.request.get('codewiseMemberId'), status: 0 }) }}" id="btnOffers" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Active Offers
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_challenges', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnChallenges" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_challenges', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" id="btnChallenges" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Challenges
                 </a>
             </div>
         </div><br />
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_offers', { brinkerMemberId: app.request.get('brinkerMemberId'), status: 1 }) }}" id="btnOffers" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_offers', { codewiseMemberId: app.request.get('codewiseMemberId'), status: 1 }) }}" id="btnOffers" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Expired Offers
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_consumer_rewards', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnRewards" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_consumer_rewards', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" id="btnRewards" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-folder-open"></i> View Rewards
                 </a>
             </div>
@@ -368,12 +368,12 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_change_pin', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnChangePin" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_change_pin', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" id="btnChangePin" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-edit"></i> Change PIN
                 </a>
             </div>
             <div class="col-sm-6">
-                <a href="{{ path('rapp_loyalty_change_password', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}" id="btnChangePin" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
+                <a href="{{ path('codewise_loyalty_change_password', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}" id="btnChangePin" type="button" class="btn btn-primary" data-toggle="ajaxModal" data-target="#ajaxModal">
                     <i class="fa fa-edit"></i> Change Password
                 </a>
             </div>

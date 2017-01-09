@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Service;
+namespace codewise\Bundle\LoyaltyBundle\Service;
 
 use CommerceGuys\Guzzle\Plugin\Oauth2\Oauth2Plugin;
 use CommerceGuys\Guzzle\Plugin\Oauth2\GrantType\ClientCredentials;
@@ -8,13 +8,13 @@ use Guzzle\Common\Exception\GuzzleException;
 use Guzzle\Http\Client;
 use JMS\Serializer\Serializer;
 use Monolog\Logger;
-use RAPP\Bundle\LoyaltyBundle\Model\Consumer;
-use RAPP\Bundle\LoyaltyBundle\Model\Message;
-use RAPP\Bundle\LoyaltyBundle\Model\PointAdjustment;
-use RAPP\Bundle\LoyaltyBundle\Model\PointRequest;
-use RAPP\Bundle\LoyaltyBundle\Model\ChangePin;
-use RAPP\Bundle\LoyaltyBundle\Model\ChangePassword;
-use RAPP\Bundle\LoyaltyBundle\Model\AddReward;
+use codewise\Bundle\LoyaltyBundle\Model\Consumer;
+use codewise\Bundle\LoyaltyBundle\Model\Message;
+use codewise\Bundle\LoyaltyBundle\Model\PointAdjustment;
+use codewise\Bundle\LoyaltyBundle\Model\PointRequest;
+use codewise\Bundle\LoyaltyBundle\Model\ChangePin;
+use codewise\Bundle\LoyaltyBundle\Model\ChangePassword;
+use codewise\Bundle\LoyaltyBundle\Model\AddReward;
 
 class LoyaltyApiClient
 {
@@ -116,7 +116,7 @@ class LoyaltyApiClient
     {
         $account = array();
 
-        $account['loyaltyID'] = $record['BrinkerMemberID'];
+        $account['loyaltyID'] = $record['codewiseMemberID'];
         $account['email'] = $record['Email'];
         $account['firstName'] = $record['FirstName'];
         $account['lastName'] = $record['LastName'];
@@ -138,10 +138,10 @@ class LoyaltyApiClient
         return $result;
     }
 
-    public function getConsumerDetails($brinkerMemberId)
+    public function getConsumerDetails($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
         $response = $this->sendPostRequest('getConsumerDetails/', $data);
         if (!isset($response->consumer)) {
@@ -152,7 +152,7 @@ class LoyaltyApiClient
 
         $consumer = new Consumer();
 
-        $consumer->setBrinkerMemberId($consumerDetails->brinkerMemberId);
+        $consumer->setcodewiseMemberId($consumerDetails->codewiseMemberId);
         $consumer->setActive($consumerDetails->active);
         $consumer->setStatus($consumerDetails->status);
         $consumer->setBasePoints($consumerDetails->basePoints);
@@ -169,10 +169,10 @@ class LoyaltyApiClient
         return $consumer;
     }
 
-    public function getConsumerActivities($brinkerMemberId)
+    public function getConsumerActivities($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('getConsumerActivities/', $data);
@@ -187,10 +187,10 @@ class LoyaltyApiClient
         return array();
     }
 
-    public function getConsumerVisits($brinkerMemberId)
+    public function getConsumerVisits($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('getConsumerVisits/', $data);
@@ -206,7 +206,7 @@ class LoyaltyApiClient
     {
         $data = array(
             'messageType' => $message->getType(),
-            'brinkerMemberId' => $message->getBrinkerMemberId(),
+            'codewiseMemberId' => $message->getcodewiseMemberId(),
         );
 
         return $this->sendPostRequest('sendMessage/', $data);
@@ -221,11 +221,11 @@ class LoyaltyApiClient
         }
     }
 
-    public function updateConsumer($brinkerMemberId, $firstName, $email, $phone, $storeCode, $birthMonth, $birthDay,
+    public function updateConsumer($codewiseMemberId, $firstName, $email, $phone, $storeCode, $birthMonth, $birthDay,
                 $plentiMemberID, $plentiPhoneNumber, $plentiCardNumber)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
             'firstName' => $firstName,
             'email' => $email,
             'phone' => $phone,
@@ -259,10 +259,10 @@ class LoyaltyApiClient
         return false;
     }
 
-    public function getPointRequests($brinkerMemberId)
+    public function getPointRequests($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('getPointRequestHistory/', $data);
@@ -274,10 +274,10 @@ class LoyaltyApiClient
         return array();
     }
 
-    public function updateConsumerStatus($brinkerMemberId, $status, $active)
+    public function updateConsumerStatus($codewiseMemberId, $status, $active)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
             'status' => $status
         );
 
@@ -294,10 +294,10 @@ class LoyaltyApiClient
         return false;
     }
 
-    public function getConsumerChallenges($brinkerMemberId)
+    public function getConsumerChallenges($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('marvel/getChallenges/', $data);
@@ -309,10 +309,10 @@ class LoyaltyApiClient
         return false;
     }
 
-    public function getConsumerRewards($brinkerMemberId)
+    public function getConsumerRewards($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('marvel/getConsumerRewards/', $data);
@@ -324,10 +324,10 @@ class LoyaltyApiClient
         return false;
     }
 
-    public function getConsumerOffers($brinkerMemberId, $status)
+    public function getConsumerOffers($codewiseMemberId, $status)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
             'status' => $status,
         );
 
@@ -340,10 +340,10 @@ class LoyaltyApiClient
         return false;
     }
 
-    public function getConsumerClaimedOffers($brinkerMemberId)
+    public function getConsumerClaimedOffers($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('claimedOffers/', $data);
@@ -357,7 +357,7 @@ class LoyaltyApiClient
 
     public function changePin(ChangePin $changePin)
     {
-        $response = $this->sendPostRequest('changePinRapp/', $changePin->jsonSerialize());
+        $response = $this->sendPostRequest('changePincodewise/', $changePin->jsonSerialize());
         
         if (isset($response->errorCode) && $response->errorCode == '00000001') {
             return true;
@@ -368,7 +368,7 @@ class LoyaltyApiClient
 
     public function changePassword(ChangePassword $changePassword)
     {
-        $response = $this->sendPostRequest('changePasswordRapp/', $changePassword->jsonSerialize());
+        $response = $this->sendPostRequest('changePasswordcodewise/', $changePassword->jsonSerialize());
         
         if (isset($response->errorCode) && $response->errorCode == '00000001') {
             return true;
@@ -405,10 +405,10 @@ class LoyaltyApiClient
         return $response;
     }
 
-    public function getRewardAdjustments($brinkerMemberId)
+    public function getRewardAdjustments($codewiseMemberId)
     {
         $data = array(
-            'loyaltyID' => $brinkerMemberId,
+            'loyaltyID' => $codewiseMemberId,
         );
 
         $response = $this->sendPostRequest('marvel/getRewardAdjustments/', $data);

@@ -1,44 +1,44 @@
 services:
-    rapp_loyalty.loyalty_api_client:
-        class: RAPP\Bundle\LoyaltyBundle\Service\LoyaltyApiClient
+    codewise_loyalty.loyalty_api_client:
+        class: codewise\Bundle\LoyaltyBundle\Service\LoyaltyApiClient
         arguments:
-            - %rapp_loyalty_api.url%
-            - %rapp_loyalty_oauth.url%
-            - %rapp_loyalty_oauth.client_id%
-            - %rapp_loyalty_oauth.secret%
+            - %codewise_loyalty_api.url%
+            - %codewise_loyalty_oauth.url%
+            - %codewise_loyalty_oauth.client_id%
+            - %codewise_loyalty_oauth.secret%
             - @jms_serializer
             - @logger
-    rapp_loyalty.loyalty_service:
-        class: RAPP\Bundle\LoyaltyBundle\Service\LoyaltyService
+    codewise_loyalty.loyalty_service:
+        class: codewise\Bundle\LoyaltyBundle\Service\LoyaltyService
         arguments:
-            - @rapp_loyalty.loyalty_api_client
+            - @codewise_loyalty.loyalty_api_client
             - @doctrine.orm.entity_manager
             - @jms_serializer
             - @logger
             
-#    rapp_message.aws_sqs_client:
-#        class: RAPP\MessageBundle\Service\AwsSqsClient
+#    codewise_message.aws_sqs_client:
+#        class: codewise\MessageBundle\Service\AwsSqsClient
 #        arguments:
 #            - %aws.key%
 #            - %aws.secret%
 #            - %aws.region%
 #            - @validator
-#    rapp_loyalty.message_processor:
-#        class: RAPP\Bundle\LoyaltyBundle\Service\LoyaltyMessageProcessor
+#    codewise_loyalty.message_processor:
+#        class: codewise\Bundle\LoyaltyBundle\Service\LoyaltyMessageProcessor
 #        arguments:
-#            - @rapp_message.aws_sqs_client
+#            - @codewise_message.aws_sqs_client
 #            - @validator
 #            - @doctrine.orm.entity_manager
-#            - @rapp_loyalty.exact_target_soap_client
-#            - %rapp_exact_target.API%
-#    rapp_loyalty.exact_target_soap_client:
-#        class: RAPP\MessageBundle\Service\ExactTargetSoapClient
+#            - @codewise_loyalty.exact_target_soap_client
+#            - %codewise_exact_target.API%
+#    codewise_loyalty.exact_target_soap_client:
+#        class: codewise\MessageBundle\Service\ExactTargetSoapClient
 #        arguments:
-#            - %exact_target.soap_api.brinker_username%
-#            - %exact_target.soap_api.brinker_password%
-#            - %exact_target.soap_api.brinker_wsdl%
-#    rapp_loyalty.exact_target_message_service:
-#        class: RAPP\Bundle\LoyaltyBundle\Service\ExactTargetMessageService
+#            - %exact_target.soap_api.codewise_username%
+#            - %exact_target.soap_api.codewise_password%
+#            - %exact_target.soap_api.codewise_wsdl%
+#    codewise_loyalty.exact_target_message_service:
+#        class: codewise\Bundle\LoyaltyBundle\Service\ExactTargetMessageService
 #        arguments:
 #            - @doctrine.orm.entity_manager
-#            - @rapp_loyalty.exact_target_soap_client
+#            - @codewise_loyalty.exact_target_soap_client

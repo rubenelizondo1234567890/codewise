@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 class PointRequest
 {
@@ -8,7 +8,7 @@ class PointRequest
     /**
      * @var integer
      */
-    private $brinkerMemberId;
+    private $codewiseMemberId;
 
     /**
      * @var \DateTime
@@ -33,7 +33,7 @@ class PointRequest
     public function jsonSerialize()
     {
         return array(
-            'loyaltyID' => $this->brinkerMemberId,
+            'loyaltyID' => $this->codewiseMemberId,
             'businessDate' => $this->businessDate->format('Y-m-d'),
             'checkNumber' => $this->checkNumber,
             'checkTotal' => number_format(preg_replace('/[^0-9.]+/', '', $this->checkTotal), 2),
@@ -41,14 +41,14 @@ class PointRequest
         );
     }
 
-    public function getBrinkerMemberId()
+    public function getcodewiseMemberId()
     {
-        return $this->brinkerMemberId;
+        return $this->codewiseMemberId;
     }
 
-    public function setBrinkerMemberId($brinkerMemberId)
+    public function setcodewiseMemberId($codewiseMemberId)
     {
-        $this->brinkerMemberId = $brinkerMemberId;
+        $this->codewiseMemberId = $codewiseMemberId;
     }
 
     public function getBusinessDate()

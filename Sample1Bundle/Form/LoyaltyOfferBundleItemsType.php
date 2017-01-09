@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Form;
+namespace codewise\Bundle\LoyaltyBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,7 +56,7 @@ class LoyaltyOfferBundleItemsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems'
+            'data_class' => 'codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems'
         ));
     }
 

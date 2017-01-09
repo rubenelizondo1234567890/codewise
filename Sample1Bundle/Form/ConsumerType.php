@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Form;
+namespace codewise\Bundle\LoyaltyBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +12,7 @@ class ConsumerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('brinkerMemberId')
+                ->add('codewiseMemberId')
                 ->add('enrollDate')
                 ->add('totalPoints')
                 ->add('firstName')
@@ -24,7 +24,7 @@ class ConsumerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'RAPP\Bundle\LoyaltyBundle\Model\Consumer',
+            'data_class' => 'codewise\Bundle\LoyaltyBundle\Model\Consumer',
             'csrf_protection' => false,
         ));
     }

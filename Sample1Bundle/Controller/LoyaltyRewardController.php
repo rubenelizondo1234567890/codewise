@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Controller;
+namespace codewise\Bundle\LoyaltyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyReward;
-use RAPP\Bundle\LoyaltyBundle\Form\LoyaltyRewardType;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyReward;
+use codewise\Bundle\LoyaltyBundle\Form\LoyaltyRewardType;
 /**
  * Loyalty Reward controller.
  *
@@ -23,23 +23,23 @@ class LoyaltyRewardController extends Controller
      * Lists available Rewards.
      *
      * @Route("/LoyaltyReward/{status}", name="LoyaltyRewards", defaults= {"status" = 0}, requirements = {"status"="3|2|1|0"})
-     * @Template("RAPPLoyaltyBundle:LoyaltyReward:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyReward:index.html.twig")
      */
     public function LoyaltyRewardAction($status)
     {
 
         switch ($status) {
             case 1:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getRewards('active');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getRewards('active');
                 $status = 1;
                 break;
             case 2:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getRewards('archive');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getRewards('archive');
                 $status = 2;
                 break;
             case 0:
             default:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getRewards('draft');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getRewards('draft');
                 $status = 0;
                 break;
         }
@@ -63,7 +63,7 @@ class LoyaltyRewardController extends Controller
      * Render the Loyalty Reward form.
      *
      * @Route("/LoyaltyReward/create", name="LoyaltyRewardCreate")
-     * @Template("RAPPLoyaltyBundle:LoyaltyReward:create.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyReward:create.html.twig")
      */
     public function LoyaltyRewardCreateAction()
     {
@@ -73,7 +73,7 @@ class LoyaltyRewardController extends Controller
 
         $error = 0;
 
-        $rewardPrograms = $this->get('rapp_loyalty.loyalty_service')->getRewardPrograms();
+        $rewardPrograms = $this->get('codewise_loyalty.loyalty_service')->getRewardPrograms();
         
         $createForm = $this->createCreateForm($entity, $rewardPrograms->getRewardPrograms);
 
@@ -94,7 +94,7 @@ class LoyaltyRewardController extends Controller
                 $entity->setMonetaryValue(0);
                 $entity->setIsClaimable(true);
                 
-                $result = $this->get('rapp_loyalty.loyalty_service')->createReward($entity);
+                $result = $this->get('codewise_loyalty.loyalty_service')->createReward($entity);
                 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -152,17 +152,17 @@ class LoyaltyRewardController extends Controller
      * Displays a form to edit an existing Reward entity.
      *
      * @Route("/LoyaltyReward/{id}/edit", name="LoyaltyRewardEdit")
-     * @Template("RAPPLoyaltyBundle:LoyaltyReward:edit.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyReward:edit.html.twig")
      */
     public function editAction(Request $request, $id)
     {
         $error = 0;
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getReward($id);
+        $results = $this->get('codewise_loyalty.loyalty_service')->getReward($id);
                 
         $entity = $results->reward;
 
-        $rewardPrograms = $this->get('rapp_loyalty.loyalty_service')->getRewardPrograms();
+        $rewardPrograms = $this->get('codewise_loyalty.loyalty_service')->getRewardPrograms();
         
         $editForm = $this->createEditForm($entity, $rewardPrograms->getRewardPrograms);
 
@@ -180,7 +180,7 @@ class LoyaltyRewardController extends Controller
                 $entity->setStartDate($startDate);
                 $entity->setEndDate($endDate);
                               
-                $result = $this->get('rapp_loyalty.loyalty_service')->updateReward($entity, $id);
+                $result = $this->get('codewise_loyalty.loyalty_service')->updateReward($entity, $id);
 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -219,11 +219,11 @@ class LoyaltyRewardController extends Controller
      * Deletes existing Reward entity.
      *
      * @Route("/LoyaltyReward/{id}/delete", name="LoyaltyRewardDelete")
-     * @Template("RAPPLoyaltyBundle:LoyaltyReward:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyReward:index.html.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $result = $this->get('rapp_loyalty.loyalty_service')->deleteReward($id);
+        $result = $this->get('codewise_loyalty.loyalty_service')->deleteReward($id);
                 
         return $this->redirect($this->generateUrl('LoyaltyRewards'));
     }
@@ -232,11 +232,11 @@ class LoyaltyRewardController extends Controller
      * Activates existing Reward entity.
      *
      * @Route("/LoyaltyReward/{id}/activate", name="LoyaltyRewardActivate")
-     * @Template("RAPPLoyaltyBundle:LoyaltyReward:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyReward:index.html.twig")
      */
     public function activateAction(Request $request, $id)
     {
-        $result = $this->get('rapp_loyalty.loyalty_service')->activateReward($id);
+        $result = $this->get('codewise_loyalty.loyalty_service')->activateReward($id);
                 
         return $this->redirect($this->generateUrl('LoyaltyRewards'));
     }
@@ -245,11 +245,11 @@ class LoyaltyRewardController extends Controller
      * Get Reward entity.
      *
      * @Route("/LoyaltyReward/{id}/view", name="LoyaltyRewardView")
-     * @Template("RAPPLoyaltyBundle:LoyaltyReward:view.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyReward:view.html.twig")
      */
     public function LoyaltyRewardViewAction(Request $request, $id)
     {
-        $results = $this->get('rapp_loyalty.loyalty_service')->getReward($id);
+        $results = $this->get('codewise_loyalty.loyalty_service')->getReward($id);
                 
         $entity = $results->reward;
 
@@ -267,7 +267,7 @@ class LoyaltyRewardController extends Controller
 
         $newId = $data['slug'];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkRewardSlug($newId);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkRewardSlug($newId);
 
         if ($results->reward) {            
             $reward = $results->reward;
@@ -290,7 +290,7 @@ class LoyaltyRewardController extends Controller
     {
         $data = $request->get('LoyaltyReward');
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkRewardSlugEdit($data['slug'], $data['entityId']);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkRewardSlugEdit($data['slug'], $data['entityId']);
 
         if ($results->reward) {            
             $reward = $results->reward;
@@ -315,7 +315,7 @@ class LoyaltyRewardController extends Controller
 
         $newId = $data['sku'];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkRewardSku($newId);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkRewardSku($newId);
 
         if ($results->reward) {            
             $reward = $results->reward;
@@ -338,7 +338,7 @@ class LoyaltyRewardController extends Controller
     {
         $data = $request->get('LoyaltyReward');
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkRewardSkuEdit($data['sku'], $data['entityId']);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkRewardSkuEdit($data['sku'], $data['entityId']);
 
         if ($results->reward) {            
             $reward = $results->reward;

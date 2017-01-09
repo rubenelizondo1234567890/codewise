@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Controller;
+namespace codewise\Bundle\LoyaltyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,9 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundle;
-use RAPP\Bundle\LoyaltyBundle\Form\LoyaltyOfferBundleType;
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundle;
+use codewise\Bundle\LoyaltyBundle\Form\LoyaltyOfferBundleType;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems;
 /**
  * Loyalty OfferBundle controller.
  *
@@ -24,23 +24,23 @@ class LoyaltyOfferBundleController extends Controller
      * Lists available Offer Bundles.
      *
      * @Route("/LoyaltyOfferBundle/{status}", name="LoyaltyOfferBundles", defaults= {"status" = 0}, requirements = {"status"="3|2|1|0"})
-     * @Template("RAPPLoyaltyBundle:LoyaltyOfferBundle:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyOfferBundle:index.html.twig")
      */
     public function LoyaltyOfferBundleAction($status)
     {
 
         switch ($status) {
             case 1:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableOfferBundles('active');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableOfferBundles('active');
                 $status = 1;
                 break;
             case 2:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableOfferBundles('archive');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableOfferBundles('archive');
                 $status = 2;
                 break;
             case 0:
             default:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableOfferBundles('draft');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableOfferBundles('draft');
                 $status = 0;
                 break;
         }
@@ -64,7 +64,7 @@ class LoyaltyOfferBundleController extends Controller
      * Render the Loyalty Offer Bundle form.
      *
      * @Route("/LoyaltyOfferBundle/create", name="LoyaltyOfferBundleCreate")
-     * @Template("RAPPLoyaltyBundle:LoyaltyOfferBundle:create.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyOfferBundle:create.html.twig")
      */
     public function LoyaltyOfferBundleCreateAction()
     {
@@ -74,7 +74,7 @@ class LoyaltyOfferBundleController extends Controller
 
         $error = 0;
 
-        $offerBundleTypes = $this->get('rapp_loyalty.loyalty_service')->getOfferBundleTypes();
+        $offerBundleTypes = $this->get('codewise_loyalty.loyalty_service')->getOfferBundleTypes();
 
         $offers = $this->getOffers();
 
@@ -94,7 +94,7 @@ class LoyaltyOfferBundleController extends Controller
                 $entity->setStartDate($startDate);
                 $entity->setEndDate($endDate);
 
-                $result = $this->get('rapp_loyalty.loyalty_service')->createOfferBundle($entity);
+                $result = $this->get('codewise_loyalty.loyalty_service')->createOfferBundle($entity);
                 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -158,17 +158,17 @@ class LoyaltyOfferBundleController extends Controller
      * Displays a form to edit an existing Offer Bundle entity.
      *
      * @Route("/LoyaltyOfferBundle/{id}/edit", name="LoyaltyOfferBundleEdit")
-     * @Template("RAPPLoyaltyBundle:LoyaltyOfferBundle:edit.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyOfferBundle:edit.html.twig")
      */
     public function editAction(Request $request, $id)
     {
         $error = 0;
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getOfferBundle($id);
+        $results = $this->get('codewise_loyalty.loyalty_service')->getOfferBundle($id);
                 
         $entity = $results->offerBundle;
                
-        $offerBundleTypes = $this->get('rapp_loyalty.loyalty_service')->getOfferBundleTypes();
+        $offerBundleTypes = $this->get('codewise_loyalty.loyalty_service')->getOfferBundleTypes();
 
         $offers = $this->getOffers();
         
@@ -188,7 +188,7 @@ class LoyaltyOfferBundleController extends Controller
                 $entity->setStartDate($startDate);
                 $entity->setEndDate($endDate);
                               
-                $result = $this->get('rapp_loyalty.loyalty_service')->updateOfferBundle($entity, $id);
+                $result = $this->get('codewise_loyalty.loyalty_service')->updateOfferBundle($entity, $id);
 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -230,11 +230,11 @@ class LoyaltyOfferBundleController extends Controller
      * Deletes existing Offer Bundle entity.
      *
      * @Route("/LoyaltyOfferBundle/{id}/delete", name="LoyaltyOfferBundleDelete")
-     * @Template("RAPPLoyaltyBundle:LoyaltyOfferBundle:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyOfferBundle:index.html.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $result = $this->get('rapp_loyalty.loyalty_service')->deleteOfferBundle($id);
+        $result = $this->get('codewise_loyalty.loyalty_service')->deleteOfferBundle($id);
                 
         return $this->redirect($this->generateUrl('LoyaltyOfferBundles'));
     }
@@ -243,11 +243,11 @@ class LoyaltyOfferBundleController extends Controller
      * Activates existing Offer Bundle entity.
      *
      * @Route("/LoyaltyOfferBundle/{id}/activate", name="LoyaltyOfferBundleActivate")
-     * @Template("RAPPLoyaltyBundle:LoyaltyOfferBundle:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyOfferBundle:index.html.twig")
      */
     public function activateAction(Request $request, $id)
     {
-        $result = $this->get('rapp_loyalty.loyalty_service')->activateOfferBundle($id);
+        $result = $this->get('codewise_loyalty.loyalty_service')->activateOfferBundle($id);
                 
         return $this->redirect($this->generateUrl('LoyaltyOfferBundles'));
     }
@@ -256,11 +256,11 @@ class LoyaltyOfferBundleController extends Controller
      * Get Offer Bundle entity.
      *
      * @Route("/LoyaltyOfferBundle/{id}/view", name="LoyaltyOfferBundleView")
-     * @Template("RAPPLoyaltyBundle:LoyaltyOfferBundle:view.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyOfferBundle:view.html.twig")
      */
     public function LoyaltyOfferBundleViewAction(Request $request, $id)
     {
-        $results = $this->get('rapp_loyalty.loyalty_service')->getOfferBundle($id);
+        $results = $this->get('codewise_loyalty.loyalty_service')->getOfferBundle($id);
                 
         $entity = $results->offerBundle;
 
@@ -278,7 +278,7 @@ class LoyaltyOfferBundleController extends Controller
 
         $newId = $data['desc'];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkOfferBundleSlug($newId);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkOfferBundleSlug($newId);
 
         if ($results->offerBundle) {            
             $offerBundle = $results->offerBundle;
@@ -301,7 +301,7 @@ class LoyaltyOfferBundleController extends Controller
     {
         $data = $request->get('LoyaltyOfferBundle');
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkOfferBundleSlugEdit($data['desc'], $data['entityId']);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkOfferBundleSlugEdit($data['desc'], $data['entityId']);
 
         if ($results->offerBundle) {            
             $offerBundle = $results->offerBundle;
@@ -324,21 +324,21 @@ class LoyaltyOfferBundleController extends Controller
         $offers = new \stdClass();
         $challenges = $rewards = $offerBundles = [];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableChallenges('bundles');                
+        $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableChallenges('bundles');                
         if ($results->errorCode == '00000001') {
             foreach ($results->challenges as $value) {
                 $challenges[intval($value->getId())] = $value->getId().' - '.$value->getName();
             }
         }
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getRewards('bundles');
+        $results = $this->get('codewise_loyalty.loyalty_service')->getRewards('bundles');
         if ($results->errorCode == '00000001') {
             foreach ($results->getRewards as $value) {
                 $rewards[intval($value->id)] = $value->id.' - '.$value->name;
             }
         }
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableOfferBundles('bundles');
+        $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableOfferBundles('bundles');
         if ($results->errorCode == '00000001') {
             foreach ($results->offerBundles as $value) {
                 $offerBundles[intval($value->getId())] = $value->getId().' - '.$value->getName();

@@ -1,16 +1,16 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Service;
+namespace codewise\Bundle\LoyaltyBundle\Service;
 
-use RAPP\Bundle\LoyaltyBundle\Service\LoyaltyApiClient;
+use codewise\Bundle\LoyaltyBundle\Service\LoyaltyApiClient;
 use Doctrine\ORM\EntityManager;
 use JMS\Serializer\Serializer;
 use Monolog\Logger;
-use RAPP\Bundle\DataBundle\Entity\IndividualPointAdd;
-use RAPP\Bundle\LoyaltyBundle\Model\Consumer;
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallenge;
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundle;
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyReward;
+use codewise\Bundle\DataBundle\Entity\IndividualPointAdd;
+use codewise\Bundle\LoyaltyBundle\Model\Consumer;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallenge;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundle;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyReward;
 
 class LoyaltyService
 {
@@ -28,22 +28,22 @@ class LoyaltyService
         $this->logger = $logger;
     }
 
-    public function getIndividual($brinkerMemberId)
+    public function getIndividual($codewiseMemberId)
     {
-        $individual = $this->em->getRepository('RAPPDataBundle:Individual')->findOneBy(array(
-            'brinkerMemberId' => $brinkerMemberId,
+        $individual = $this->em->getRepository('codewiseDataBundle:Individual')->findOneBy(array(
+            'codewiseMemberId' => $codewiseMemberId,
         ));
 
         return $individual;
     }
 
-    public function addPoints($brinkerMemberId, $points, $notes, $user)
+    public function addPoints($codewiseMemberId, $points, $notes, $user)
     {
-        $response = $this->loyaltyApiClient->addPoints($brinkerMemberId, $points, $notes, $user->getId());
+        $response = $this->loyaltyApiClient->addPoints($codewiseMemberId, $points, $notes, $user->getId());
 
         if (!empty($response->success)) {
             try {
-                $individual = $this->getIndividual($brinkerMemberId);
+                $individual = $this->getIndividual($codewiseMemberId);
 
                 $pointAdd = new IndividualPointAdd();
 
@@ -57,7 +57,7 @@ class LoyaltyService
 
                 return $points;
             } catch (\Exception $e) {
-                $this->logger->log('error', "Failed to log $points points added to Loyalty Member [ID = $brinkerMemberId].");
+                $this->logger->log('error', "Failed to log $points points added to Loyalty Member [ID = $codewiseMemberId].");
                 return -$points;
             }
         }
@@ -65,9 +65,9 @@ class LoyaltyService
         return 0;
     }
 
-    public function getConsumerDetails($brinkerMemberId)
+    public function getConsumerDetails($codewiseMemberId)
     {
-        $response = $this->loyaltyApiClient->getConsumerDetails($brinkerMemberId);
+        $response = $this->loyaltyApiClient->getConsumerDetails($codewiseMemberId);
 
         if (isset($response->consumer)) {
             return $response->consumer;
@@ -76,7 +76,7 @@ class LoyaltyService
 
     public function updateConsumer(Consumer $consumer)
     {
-        $brinkerMemberId = $consumer->getBrinkerMemberId();
+        $codewiseMemberId = $consumer->getcodewiseMemberId();
         $firstName = $consumer->getFirstName();
         $email = $consumer->getEmail();
         $phone = $consumer->getPhone();
@@ -87,7 +87,7 @@ class LoyaltyService
         $plentiPhoneNumber = $consumer->getPlentiPhoneNumber();
         $plentiCardNumber = $consumer->getPlentiCardNumber();
 
-        return $this->loyaltyApiClient->updateConsumer($brinkerMemberId, $firstName, $email, $phone, $storeCode, $birthMonth, $birthDay,
+        return $this->loyaltyApiClient->updateConsumer($codewiseMemberId, $firstName, $email, $phone, $storeCode, $birthMonth, $birthDay,
                 $plentiMemberID, $plentiPhoneNumber, $plentiCardNumber);
     }
 
@@ -99,7 +99,7 @@ class LoyaltyService
         
         $results = $this->loyaltyApiClient->sendPostJsonRequest('getAvailableChallenges', $json);
 
-        return $this->serializer->deserialize($results,'RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallengesResponse', 'json');
+        return $this->serializer->deserialize($results,'codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallengesResponse', 'json');
     }
 
     public function getChallenge($id)
@@ -107,7 +107,7 @@ class LoyaltyService
         $data['id'] = $id;
         $json = $this->serializer->serialize($data, 'json');
         $results = $this->loyaltyApiClient->sendPostJsonRequest('getChallenge', $json);
-        return $this->serializer->deserialize($results,'RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallengeResponse', 'json');
+        return $this->serializer->deserialize($results,'codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallengeResponse', 'json');
     }
 
     public function createChallenge(LoyaltyChallenge $data)
@@ -224,7 +224,7 @@ class LoyaltyService
         
         $results = $this->loyaltyApiClient->sendPostJsonRequest('marvel/getOfferBundles/', $json);
 
-        return $this->serializer->deserialize($results,'RAPP\Bundle\LoyaltyBundle\Model\OfferBundlesResponse', 'json');
+        return $this->serializer->deserialize($results,'codewise\Bundle\LoyaltyBundle\Model\OfferBundlesResponse', 'json');
     }
 
     public function getOfferBundleTypes()
@@ -280,7 +280,7 @@ class LoyaltyService
         $data['id'] = $id;
         $json = $this->serializer->serialize($data, 'json');
         $results = $this->loyaltyApiClient->sendPostJsonRequest('marvel/getOfferBundle/', $json);
-        return $this->serializer->deserialize($results,'RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleResponse', 'json');
+        return $this->serializer->deserialize($results,'codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleResponse', 'json');
     }
 
     public function updateOfferBundle($data, $id)
@@ -303,7 +303,7 @@ class LoyaltyService
         $data['id'] = $id;
         $json = $this->serializer->serialize($data, 'json');
         $results = $this->loyaltyApiClient->sendPostJsonRequest('marvel/getReward/', $json);
-        return $this->serializer->deserialize($results,'RAPP\Bundle\LoyaltyBundle\Model\LoyaltyRewardResponse', 'json');
+        return $this->serializer->deserialize($results,'codewise\Bundle\LoyaltyBundle\Model\LoyaltyRewardResponse', 'json');
     }
 
     public function getRewardPrograms()

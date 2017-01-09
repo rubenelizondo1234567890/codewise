@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Form;
+namespace codewise\Bundle\LoyaltyBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +12,7 @@ class ChangePinType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('brinkerMemberId', 'hidden', array(
+                ->add('codewiseMemberId', 'hidden', array(
                     'required' => true
                     ))
                 ->add('newPin', 'text', array(
@@ -30,7 +30,7 @@ class ChangePinType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'RAPP\Bundle\LoyaltyBundle\Model\ChangePin',
+            'data_class' => 'codewise\Bundle\LoyaltyBundle\Model\ChangePin',
             'csrf_protection' => false,
         ));
     }

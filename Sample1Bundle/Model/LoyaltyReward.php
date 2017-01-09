@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 use JMS\Serializer\Annotation as JMS;
 

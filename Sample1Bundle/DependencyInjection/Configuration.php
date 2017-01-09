@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\DependencyInjection;
+namespace codewise\Bundle\LoyaltyBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('rapp_loyalty');
+        $rootNode = $treeBuilder->root('codewise_loyalty');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for

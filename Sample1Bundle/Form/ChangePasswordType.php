@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Form;
+namespace codewise\Bundle\LoyaltyBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +12,7 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('brinkerMemberId', 'hidden', array(
+                ->add('codewiseMemberId', 'hidden', array(
                     'required' => true
                     ))
                 ->add('newPassword', 'text', array(
@@ -30,7 +30,7 @@ class ChangePasswordType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'RAPP\Bundle\LoyaltyBundle\Model\ChangePassword',
+            'data_class' => 'codewise\Bundle\LoyaltyBundle\Model\ChangePassword',
             'csrf_protection' => false,
         ));
     }

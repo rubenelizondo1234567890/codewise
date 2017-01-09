@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,7 +13,7 @@ class ChangePassword
      * @Assert\NotBlank(message="8-digit Loyalty ID required")
      * @Assert\Regex(pattern="/^\d{8}$/", message="Invalid Loyalty ID (must be 8 digits)")
      */
-    private $brinkerMemberId;
+    private $codewiseMemberId;
 
     /**
      * @var string
@@ -35,19 +35,19 @@ class ChangePassword
     public function jsonSerialize()
     {
         return array(
-            'loyaltyID' => $this->brinkerMemberId,
+            'loyaltyID' => $this->codewiseMemberId,
             'password' => $this->newPassword
         );
     }
 
-    public function getBrinkerMemberId()
+    public function getcodewiseMemberId()
     {
-        return $this->brinkerMemberId;
+        return $this->codewiseMemberId;
     }
 
-    public function setBrinkerMemberId($brinkerMemberId)
+    public function setcodewiseMemberId($codewiseMemberId)
     {
-        $this->brinkerMemberId = $brinkerMemberId;
+        $this->codewiseMemberId = $codewiseMemberId;
     }
 
     public function getNewPassword()

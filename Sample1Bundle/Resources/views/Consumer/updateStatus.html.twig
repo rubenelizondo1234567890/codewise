@@ -1,7 +1,7 @@
 <!-- ajaxModal content -->
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-    <h4 class="modal-title">Update Status for Loyalty Member #{{ app.request.get('brinkerMemberId') }}</h4>
+    <h4 class="modal-title">Update Status for Loyalty Member #{{ app.request.get('codewiseMemberId') }}</h4>
 </div>
 <div class="modal-body">
     <div class="row-fluid">
@@ -25,7 +25,7 @@
 <script type="text/javascript">
     $('form').submit(function (e) {
         e.preventDefault();
-        var url = '{{ path('rapp_loyalty_consumer_update_status', { brinkerMemberId: app.request.get('brinkerMemberId') }) }}';
+        var url = '{{ path('codewise_loyalty_consumer_update_status', { codewiseMemberId: app.request.get('codewiseMemberId') }) }}';
         var data = $(this).serialize();
         $.post(url, data, function (data) {
             var modalBody = $('#ajaxModal .modal-body');

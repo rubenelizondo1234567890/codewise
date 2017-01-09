@@ -1,15 +1,15 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Service;
+namespace codewise\Bundle\LoyaltyBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use RAPP\Bundle\DataBundle\Entity\IndividualEmailAddress;
-use RAPP\MessageBundle\Message\ExactTarget\ExactTargetClient;
-use RAPP\MessageBundle\Message\ExactTarget\ExactTargetRequest;
-use RAPP\MessageBundle\Message\ExactTarget\ExactTargetSubscriber;
-use RAPP\MessageBundle\Message\ExactTarget\TriggeredSendDefinition;
-use RAPP\MessageBundle\Message\ExactTarget\TriggeredSendObject;
-use RAPP\MessageBundle\Service\ExactTargetSoapClient;
+use codewise\Bundle\DataBundle\Entity\IndividualEmailAddress;
+use codewise\MessageBundle\Message\ExactTarget\ExactTargetClient;
+use codewise\MessageBundle\Message\ExactTarget\ExactTargetRequest;
+use codewise\MessageBundle\Message\ExactTarget\ExactTargetSubscriber;
+use codewise\MessageBundle\Message\ExactTarget\TriggeredSendDefinition;
+use codewise\MessageBundle\Message\ExactTarget\TriggeredSendObject;
+use codewise\MessageBundle\Service\ExactTargetSoapClient;
 
 class ExactTargetMessageService
 {
@@ -26,22 +26,22 @@ class ExactTargetMessageService
         $this->exactTargetSoapClient = $exactTargetSoapClient;
     }
 
-    private function getIndividualEmailAddress($brinkerMemberId)
+    private function getIndividualEmailAddress($codewiseMemberId)
     {
-        $repository = $this->em->getRepository('RAPPDataBundle:IndividualEmailAddress');
+        $repository = $this->em->getRepository('codewiseDataBundle:IndividualEmailAddress');
 
-        $individualEmailAddress = $repository->getByBrinkerMemberIdAndDivision($brinkerMemberId, 1);
+        $individualEmailAddress = $repository->getBycodewiseMemberIdAndDivision($codewiseMemberId, 1);
 
         if (!$individualEmailAddress instanceof IndividualEmailAddress) {
-            throw new \Exception("Individual Email Address not found [BMID = $brinkerMemberId].");
+            throw new \Exception("Individual Email Address not found [BMID = $codewiseMemberId].");
         }
 
         return $individualEmailAddress;
     }
 
-    public function sendBirthdayMessage($brinkerMemberId)
+    public function sendBirthdayMessage($codewiseMemberId)
     {
-        $individualEmailAddress = $this->getIndividualEmailAddress($brinkerMemberId);
+        $individualEmailAddress = $this->getIndividualEmailAddress($codewiseMemberId);
 
         $object = new TriggeredSendObject();
 

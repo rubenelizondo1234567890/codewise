@@ -1,9 +1,9 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems;
 use JMS\Serializer\Annotation as JMS;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -72,7 +72,7 @@ class LoyaltyOfferBundle
 
     /**
      * @var offerBundleItems
-     * @JMS\Type("ArrayCollection<RAPP\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems>")
+     * @JMS\Type("ArrayCollection<codewise\Bundle\LoyaltyBundle\Model\LoyaltyOfferBundleItems>")
      * @JMS\SerializedName("offerBundleItems")
      */
     public $offerBundleItems;

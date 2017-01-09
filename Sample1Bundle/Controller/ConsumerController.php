@@ -1,21 +1,21 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Controller;
+namespace codewise\Bundle\LoyaltyBundle\Controller;
 
 use Monolog\Logger;
-use RAPP\Bundle\LoyaltyBundle\Form\ChangePasswordType;
-use RAPP\Bundle\LoyaltyBundle\Form\ChangePinType;
-use RAPP\Bundle\LoyaltyBundle\Model\ChangePassword;
-use RAPP\Bundle\LoyaltyBundle\Model\ChangePin;
-use RAPP\Bundle\DataBundle\Entity\IndividualPointAdd;
-use RAPP\Bundle\LoyaltyBundle\Form\MessageType;
-use RAPP\Bundle\LoyaltyBundle\Form\PointAdjustmentType;
-use RAPP\Bundle\LoyaltyBundle\Form\PointRequestType;
-use RAPP\Bundle\LoyaltyBundle\Form\AddRewardType;
-use RAPP\Bundle\LoyaltyBundle\Model\Message;
-use RAPP\Bundle\LoyaltyBundle\Model\PointAdjustment;
-use RAPP\Bundle\LoyaltyBundle\Model\PointRequest;
-use RAPP\Bundle\LoyaltyBundle\Model\AddReward;
+use codewise\Bundle\LoyaltyBundle\Form\ChangePasswordType;
+use codewise\Bundle\LoyaltyBundle\Form\ChangePinType;
+use codewise\Bundle\LoyaltyBundle\Model\ChangePassword;
+use codewise\Bundle\LoyaltyBundle\Model\ChangePin;
+use codewise\Bundle\DataBundle\Entity\IndividualPointAdd;
+use codewise\Bundle\LoyaltyBundle\Form\MessageType;
+use codewise\Bundle\LoyaltyBundle\Form\PointAdjustmentType;
+use codewise\Bundle\LoyaltyBundle\Form\PointRequestType;
+use codewise\Bundle\LoyaltyBundle\Form\AddRewardType;
+use codewise\Bundle\LoyaltyBundle\Model\Message;
+use codewise\Bundle\LoyaltyBundle\Model\PointAdjustment;
+use codewise\Bundle\LoyaltyBundle\Model\PointRequest;
+use codewise\Bundle\LoyaltyBundle\Model\AddReward;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/consumer/{brinkerMemberId}")
+ * @Route("/consumer/{codewiseMemberId}")
  */
 class ConsumerController extends Controller
 {
@@ -40,20 +40,20 @@ class ConsumerController extends Controller
     }
     
     /**
-     * @Route("/overview", name="rapp_loyalty_consumer_overview")
+     * @Route("/overview", name="codewise_loyalty_consumer_overview")
      */
-    public function overview($brinkerMemberId)
+    public function overview($codewiseMemberId)
     {
         $i=-1;
         $individualAttributes = array();
-        $consumer = $this->get('rapp_loyalty.loyalty_api_client')->getConsumerDetails($brinkerMemberId);
+        $consumer = $this->get('codewise_loyalty.loyalty_api_client')->getConsumerDetails($codewiseMemberId);
         $em = $this->getDoctrine()->getManager();
-        $individual = $em->getRepository('RAPPDataBundle:Individual')->findOneBy(array('brinkerMemberId' => $brinkerMemberId));
+        $individual = $em->getRepository('codewiseDataBundle:Individual')->findOneBy(array('codewiseMemberId' => $codewiseMemberId));
 
-        $repository = $em->getRepository('RAPPDataBundle:IndividualAttribute');
+        $repository = $em->getRepository('codewiseDataBundle:IndividualAttribute');
         $individualAttribute = $repository->findBy(['individual'=>$individual]);
 
-        $repository = $em->getRepository('RAPPDataBundle:IndividualExternalId');
+        $repository = $em->getRepository('codewiseDataBundle:IndividualExternalId');
         $individualExternalId = $repository->findBy(['individual'=>$individual]);
         foreach ($individualExternalId as $att){
             if($att->getName() == 'plenti_member_id' && $att->getActive() == 1){
@@ -93,45 +93,45 @@ class ConsumerController extends Controller
             }
         };
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:overview.html.twig', array('consumer' => $consumer, 'individualAttribute' => $individualAttributes, 'showPlenti' => 0));
+        return $this->render('codewiseLoyaltyBundle:Consumer:overview.html.twig', array('consumer' => $consumer, 'individualAttribute' => $individualAttributes, 'showPlenti' => 0));
     }
 
     /**
-     * @Route("/activities", name="rapp_loyalty_consumer_activities")
+     * @Route("/activities", name="codewise_loyalty_consumer_activities")
      */
-    public function activities($brinkerMemberId)
+    public function activities($codewiseMemberId)
     {
-        $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+        $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
-        $activities = $loyaltyApiClient->getConsumerActivities($brinkerMemberId);
+        $activities = $loyaltyApiClient->getConsumerActivities($codewiseMemberId);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:activities.html.twig', array('activities' => $activities));
+        return $this->render('codewiseLoyaltyBundle:Consumer:activities.html.twig', array('activities' => $activities));
     }
 
     /**
-     * @Route("/pointAdjustments", name="rapp_loyalty_consumer_point_adjustments")
+     * @Route("/pointAdjustments", name="codewise_loyalty_consumer_point_adjustments")
      */
-    public function pointAdjustments($brinkerMemberId)
+    public function pointAdjustments($codewiseMemberId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $pointAdjustments = $em->getRepository('RAPPDataBundle:IndividualPointAdd')->getByBrinkerMemberId($brinkerMemberId);
+        $pointAdjustments = $em->getRepository('codewiseDataBundle:IndividualPointAdd')->getBycodewiseMemberId($codewiseMemberId);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:pointAdjustments.html.twig', array('pointAdjustments' => $pointAdjustments));
+        return $this->render('codewiseLoyaltyBundle:Consumer:pointAdjustments.html.twig', array('pointAdjustments' => $pointAdjustments));
     }
 
     /**
-     * @Route("/pointRequests", name="rapp_loyalty_consumer_point_requests")
+     * @Route("/pointRequests", name="codewise_loyalty_consumer_point_requests")
      */
-    public function pointRequests($brinkerMemberId)
+    public function pointRequests($codewiseMemberId)
     {
-        $pointRequests = $this->get('rapp_loyalty.loyalty_api_client')->getPointRequests($brinkerMemberId);
+        $pointRequests = $this->get('codewise_loyalty.loyalty_api_client')->getPointRequests($codewiseMemberId);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:pointRequests.html.twig', array('pointRequests' => $pointRequests));
+        return $this->render('codewiseLoyaltyBundle:Consumer:pointRequests.html.twig', array('pointRequests' => $pointRequests));
     }
 
     /**
-     * @Route("/adjustPoints", name="rapp_loyalty_consumer_adjust_points")
+     * @Route("/adjustPoints", name="codewise_loyalty_consumer_adjust_points")
      * @Method({"GET"})
      */
     public function adjustPointsGet()
@@ -140,14 +140,14 @@ class ConsumerController extends Controller
 
         $form = $this->createForm(new PointAdjustmentType(), $pointAdjustment);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:adjustPoints.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:adjustPoints.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/adjustPoints")
      * @Method({"POST"})
      */
-    public function adjustPointsPost(Request $request, $brinkerMemberId)
+    public function adjustPointsPost(Request $request, $codewiseMemberId)
     {
         $form = $this->createForm(new PointAdjustmentType());
 
@@ -159,18 +159,18 @@ class ConsumerController extends Controller
 
             $pointAdjustment = $form->getData();
 
-            $pointAdjustment->setBrinkerMemberId($brinkerMemberId);
+            $pointAdjustment->setcodewiseMemberId($codewiseMemberId);
             $pointAdjustment->setUser($user->getId());
 
             try {
-                $pointsAdded = $this->get('rapp_loyalty.loyalty_api_client')->adjustPoints($pointAdjustment);
+                $pointsAdded = $this->get('codewise_loyalty.loyalty_api_client')->adjustPoints($pointAdjustment);
 
                 if ($pointsAdded) {
 
                     $em = $this->getDoctrine()->getManager();
 
-                    $individual = $em->getRepository('RAPPDataBundle:Individual')->findOneBy(array(
-                        'brinkerMemberId' => $brinkerMemberId,
+                    $individual = $em->getRepository('codewiseDataBundle:Individual')->findOneBy(array(
+                        'codewiseMemberId' => $codewiseMemberId,
                     ));
 
                     $pointAdd = new IndividualPointAdd();
@@ -211,26 +211,26 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/requestPoints", name="rapp_loyalty_consumer_request_points")
+     * @Route("/requestPoints", name="codewise_loyalty_consumer_request_points")
      * @Method({"GET"})
      */
-    public function requestPointsGet($brinkerMemberId)
+    public function requestPointsGet($codewiseMemberId)
     {
         $pointRequest = new PointRequest();
-        $pointRequest->setBrinkerMemberId($brinkerMemberId);
+        $pointRequest->setcodewiseMemberId($codewiseMemberId);
 
         $form = $this->createForm(new PointRequestType(), $pointRequest);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:requestPoints.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:requestPoints.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/requestPoints")
      * @Method({"POST"})
      */
-    public function requestPointsPost(Request $request, $brinkerMemberId)
+    public function requestPointsPost(Request $request, $codewiseMemberId)
     {
-        $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+        $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
         $form = $this->createForm(new PointRequestType());
 
@@ -268,21 +268,21 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/sendMessage", name="rapp_loyalty_consumer_send_message")
+     * @Route("/sendMessage", name="codewise_loyalty_consumer_send_message")
      * @Method({"GET"})
      */
     public function sendMessageGet()
     {
         $form = $this->createForm(new MessageType());
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:sendMessage.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:sendMessage.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/sendMessage")
      * @Method({"POST"})
      */
-    public function sendMessagePost(Request $request, $brinkerMemberId)
+    public function sendMessagePost(Request $request, $codewiseMemberId)
     {
         $form = $this->createForm(new MessageType());
 
@@ -292,9 +292,9 @@ class ConsumerController extends Controller
 
             $message = $form->getData();
 
-            $message->setBrinkerMemberId($brinkerMemberId);
+            $message->setcodewiseMemberId($codewiseMemberId);
 
-            $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+            $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
             $response = $loyaltyApiClient->sendMessage($message);
 
@@ -320,19 +320,19 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/visits", name="rapp_loyalty_consumer_visits")
+     * @Route("/visits", name="codewise_loyalty_consumer_visits")
      */
-    public function visits($brinkerMemberId)
+    public function visits($codewiseMemberId)
     {
-        $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+        $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
-        $visits = $loyaltyApiClient->getConsumerVisits($brinkerMemberId);
+        $visits = $loyaltyApiClient->getConsumerVisits($codewiseMemberId);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:visits.html.twig', array('visits' => $visits));
+        return $this->render('codewiseLoyaltyBundle:Consumer:visits.html.twig', array('visits' => $visits));
     }
 
     /**
-     * @Route("/updateStatus", name="rapp_loyalty_consumer_update_status")
+     * @Route("/updateStatus", name="codewise_loyalty_consumer_update_status")
      * @Method({"GET"})
      */
     public function updateStatusGet()
@@ -357,14 +357,14 @@ class ConsumerController extends Controller
                     ))
                 ->getForm();
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:updateStatus.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:updateStatus.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/updateStatus")
      * @Method({"POST"})
      */
-    public function updateStatusPost(Request $request, $brinkerMemberId)
+    public function updateStatusPost(Request $request, $codewiseMemberId)
     {
         $form = $this->createFormBuilder()
                 ->add('status', 'choice', array(
@@ -393,16 +393,16 @@ class ConsumerController extends Controller
             $active = $form->get('active')->getData();
             $note = $form->get('notes')->getData();
 
-            $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+            $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
-            $success = $loyaltyApiClient->updateConsumerStatus($brinkerMemberId, $status, $active);
+            $success = $loyaltyApiClient->updateConsumerStatus($codewiseMemberId, $status, $active);
 
             if ($success) {
                 //opt out for inactive/blacklist
                 $optOut = $status == 'blacklist' || $active === 0;
                 
                 $activeStr = is_null($active)? '' : ($active? 'active' : 'inactive');
-                $notes = $this->addNotes($brinkerMemberId, $note, 'CHANGE MEMBER STATUS: ('. $status. ($activeStr? '/'.$activeStr : '') . ') ', $optOut);
+                $notes = $this->addNotes($codewiseMemberId, $note, 'CHANGE MEMBER STATUS: ('. $status. ($activeStr? '/'.$activeStr : '') . ') ', $optOut);
                 
                 $response = array(
                     'success' => true,
@@ -428,63 +428,63 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/challenges", name="rapp_loyalty_consumer_challenges")
+     * @Route("/challenges", name="codewise_loyalty_consumer_challenges")
      */
-    public function getChallenges($brinkerMemberId)
+    public function getChallenges($codewiseMemberId)
     {
-        $challenges = $this->get('rapp_loyalty.loyalty_api_client')->getConsumerChallenges($brinkerMemberId);
+        $challenges = $this->get('codewise_loyalty.loyalty_api_client')->getConsumerChallenges($codewiseMemberId);
   
-        return $this->render('RAPPLoyaltyBundle:Consumer:challenges.html.twig', array('challenges' => $challenges));
+        return $this->render('codewiseLoyaltyBundle:Consumer:challenges.html.twig', array('challenges' => $challenges));
     }
 
     /**
-     * @Route("/rewards", name="rapp_loyalty_consumer_rewards")
+     * @Route("/rewards", name="codewise_loyalty_consumer_rewards")
      */
-    public function getRewards($brinkerMemberId)
+    public function getRewards($codewiseMemberId)
     {
-        $rewards = $this->get('rapp_loyalty.loyalty_api_client')->getConsumerRewards($brinkerMemberId);
+        $rewards = $this->get('codewise_loyalty.loyalty_api_client')->getConsumerRewards($codewiseMemberId);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:rewards.html.twig', array('rewards' => $rewards));
+        return $this->render('codewiseLoyaltyBundle:Consumer:rewards.html.twig', array('rewards' => $rewards));
     }
 
     /**
-     * @Route("/offers/{status}", name="rapp_loyalty_consumer_offers", defaults = {"status" = 1 })
+     * @Route("/offers/{status}", name="codewise_loyalty_consumer_offers", defaults = {"status" = 1 })
      */
-    public function getOffers($brinkerMemberId, $status)
+    public function getOffers($codewiseMemberId, $status)
     {
         if ($status == 0) {
-            $offers = $this->get('rapp_loyalty.loyalty_api_client')->getConsumerOffers($brinkerMemberId , 'Active');
+            $offers = $this->get('codewise_loyalty.loyalty_api_client')->getConsumerOffers($codewiseMemberId , 'Active');
             $status = 0;
         } else {
-            $offers = $this->get('rapp_loyalty.loyalty_api_client')->getConsumerOffers($brinkerMemberId , 'Expired');
+            $offers = $this->get('codewise_loyalty.loyalty_api_client')->getConsumerOffers($codewiseMemberId , 'Expired');
             $status = 1;
         }
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:offers.html.twig', array('offers' => $offers, 'status' => $status));
+        return $this->render('codewiseLoyaltyBundle:Consumer:offers.html.twig', array('offers' => $offers, 'status' => $status));
 
     }
 
     /**
-     * @Route("/changePin", name="rapp_loyalty_change_pin")
+     * @Route("/changePin", name="codewise_loyalty_change_pin")
      * @Method({"GET"})
      */
-    public function changePinGet($brinkerMemberId)
+    public function changePinGet($codewiseMemberId)
     {
         $changePin = new ChangePin();
-        $changePin->setBrinkerMemberId($brinkerMemberId);
+        $changePin->setcodewiseMemberId($codewiseMemberId);
 
         $form = $this->createForm(new ChangePinType(), $changePin);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:changePin.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:changePin.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/changePin")
      * @Method({"POST"})
      */
-    public function changePinPost(Request $request, $brinkerMemberId)
+    public function changePinPost(Request $request, $codewiseMemberId)
     {
-        $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+        $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
         $form = $this->createForm(new ChangePinType());
 
@@ -496,7 +496,7 @@ class ConsumerController extends Controller
             try {
                 $success = $loyaltyApiClient->changePin($changePin);
                 if ($success === true) {
-                    $notes = $this->addNotes($brinkerMemberId, $changePin->getNotes(), 'CHANGE PIN: ');
+                    $notes = $this->addNotes($codewiseMemberId, $changePin->getNotes(), 'CHANGE PIN: ');
                     
                     $response = array(
                         'success' => true,
@@ -534,26 +534,26 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/changePassword", name="rapp_loyalty_change_password")
+     * @Route("/changePassword", name="codewise_loyalty_change_password")
      * @Method({"GET"})
      */
-    public function changePassword($brinkerMemberId)
+    public function changePassword($codewiseMemberId)
     {
         $changePassword = new ChangePassword();
-        $changePassword->setBrinkerMemberId($brinkerMemberId);
+        $changePassword->setcodewiseMemberId($codewiseMemberId);
 
         $form = $this->createForm(new ChangePasswordType(), $changePassword);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:changePassword.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:changePassword.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/changePassword")
      * @Method({"POST"})
      */
-    public function changePasswordPost(Request $request, $brinkerMemberId)
+    public function changePasswordPost(Request $request, $codewiseMemberId)
     {
-        $loyaltyApiClient = $this->get('rapp_loyalty.loyalty_api_client');
+        $loyaltyApiClient = $this->get('codewise_loyalty.loyalty_api_client');
 
         $form = $this->createForm(new ChangePasswordType());
 
@@ -565,7 +565,7 @@ class ConsumerController extends Controller
             try {
                 $success = $loyaltyApiClient->changePassword($changePassword);
                 if ($success === true) {
-                    $notes = $this->addNotes($brinkerMemberId, $changePassword->getNotes(), 'CHANGE PASSWORD: ');
+                    $notes = $this->addNotes($codewiseMemberId, $changePassword->getNotes(), 'CHANGE PASSWORD: ');
                     
                     $response = array(
                         'success' => true,
@@ -602,14 +602,14 @@ class ConsumerController extends Controller
         return new JsonResponse($response);
     }
 
-    private function addNotes($brinkerMemberId, $notes, $prefix = '', $optOut = false)
+    private function addNotes($codewiseMemberId, $notes, $prefix = '', $optOut = false)
     {
         $divisionNo = 1;
-        $drm = $this->container->get('rapp_data.repository_manager');
-        $individual = $drm->getIndividualByBrinkerMemberID($brinkerMemberId);
+        $drm = $this->container->get('codewise_data.repository_manager');
+        $individual = $drm->getIndividualBycodewiseMemberID($codewiseMemberId);
 
         $user = $this->getUser();
-        $iNotes = new \RAPP\Bundle\DataBundle\Entity\IndividualNotes();
+        $iNotes = new \codewise\Bundle\DataBundle\Entity\IndividualNotes();
         $iNotes->setDivisionNo($divisionNo);
         $iNotes->setUser($user);
         $iNotes->setIndividual($individual);
@@ -638,28 +638,28 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/addReward", name="rapp_loyalty_consumer_add_reward")
+     * @Route("/addReward", name="codewise_loyalty_consumer_add_reward")
      * @Method({"GET"})
      */
     public function addRewardGet()
     {
 
-        $rewards = $this->get('rapp_loyalty.loyalty_service')->getRewards('allClaimable');
+        $rewards = $this->get('codewise_loyalty.loyalty_service')->getRewards('allClaimable');
 
         $addReward = new AddReward();
 
         $form = $this->createForm(new AddRewardType($rewards->getRewards), $addReward);
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:addReward.html.twig', array('form' => $form->createView()));
+        return $this->render('codewiseLoyaltyBundle:Consumer:addReward.html.twig', array('form' => $form->createView()));
     }
 
     /**
      * @Route("/addReward")
      * @Method({"POST"})
      */
-    public function addRewardPost(Request $request, $brinkerMemberId)
+    public function addRewardPost(Request $request, $codewiseMemberId)
     {
-        $rewards = $this->get('rapp_loyalty.loyalty_service')->getRewards('allClaimable');
+        $rewards = $this->get('codewise_loyalty.loyalty_service')->getRewards('allClaimable');
 
         $form = $this->createForm(new AddRewardType($rewards->getRewards));
 
@@ -671,12 +671,12 @@ class ConsumerController extends Controller
 
             $addReward = $form->getData();
 
-            $addReward->setBrinkerMemberId($brinkerMemberId);
+            $addReward->setcodewiseMemberId($codewiseMemberId);
             $addReward->setUser($user->getId());
 
             try {
 
-                $rewardAdded = $this->get('rapp_loyalty.loyalty_api_client')->addReward($addReward);
+                $rewardAdded = $this->get('codewise_loyalty.loyalty_api_client')->addReward($addReward);
 
                 if ($rewardAdded->success) {
 
@@ -694,7 +694,7 @@ class ConsumerController extends Controller
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->error('Error adding reward in LMS'
-                        . ' for BMID ' . $brinkerMemberId
+                        . ' for BMID ' . $codewiseMemberId
                         . ' with exception: ' . (string) $e);
                 $response = array(
                     'success' => false,
@@ -712,21 +712,21 @@ class ConsumerController extends Controller
     }
 
     /**
-     * @Route("/rewardAdjustments", name="rapp_loyalty_consumer_reward_adjustments")
+     * @Route("/rewardAdjustments", name="codewise_loyalty_consumer_reward_adjustments")
      */
-    public function rewardAdjustments($brinkerMemberId)
+    public function rewardAdjustments($codewiseMemberId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $rewardAdjustments = $this->get('rapp_loyalty.loyalty_api_client')->getRewardAdjustments($brinkerMemberId);
+        $rewardAdjustments = $this->get('codewise_loyalty.loyalty_api_client')->getRewardAdjustments($codewiseMemberId);
 
         for ($i=0; $i <count($rewardAdjustments) ; $i++) { 
             $rewardAdjustment = $rewardAdjustments[$i];
-            $user = $em->getRepository('RAPPMarvelAdminBundle:User')->find($rewardAdjustment->user);
+            $user = $em->getRepository('codewiseMarvelAdminBundle:User')->find($rewardAdjustment->user);
             $rewardAdjustments[$i]->username = $user->getUsername();
         }
 
-        return $this->render('RAPPLoyaltyBundle:Consumer:rewardAdjustments.html.twig', array('rewardAdjustments' => $rewardAdjustments));
+        return $this->render('codewiseLoyaltyBundle:Consumer:rewardAdjustments.html.twig', array('rewardAdjustments' => $rewardAdjustments));
     }
 
 }

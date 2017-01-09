@@ -26,7 +26,7 @@ use RetsBundle\Adapter\Helper\mlsImageHelper;
 
 /**
  * RETS Service Provider
- * Provides wrapper class for PHRETS package
+ * Provides wcodewiseer class for PHRETS package
  */
 class RetsServiceProvider
 {

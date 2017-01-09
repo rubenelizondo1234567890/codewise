@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 use JMS\Serializer\Annotation as JMS;
 
@@ -20,7 +20,7 @@ class LoyaltyChallengesResponse
 
     /**
      * @var challenges
-     * @JMS\Type("ArrayCollection<RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallenge>")
+     * @JMS\Type("ArrayCollection<codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallenge>")
      * @JMS\SerializedName("challenges")
      */
     public $challenges;

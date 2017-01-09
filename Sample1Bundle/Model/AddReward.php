@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Model;
+namespace codewise\Bundle\LoyaltyBundle\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,7 +10,7 @@ class AddReward
     /**
      * @var integer
      */
-    private $brinkerMemberId;
+    private $codewiseMemberId;
 
     /**
      * @var integer
@@ -41,7 +41,7 @@ class AddReward
     public function jsonSerialize()
     {
         return array(
-            'loyaltyID' => $this->brinkerMemberId,
+            'loyaltyID' => $this->codewiseMemberId,
             'rewardId' => $this->rewardId,
             'rewardDuration' => $this->rewardDuration,
             'notes' => $this->notes,
@@ -49,14 +49,14 @@ class AddReward
         );
     }
 
-    public function getBrinkerMemberId()
+    public function getcodewiseMemberId()
     {
-        return $this->brinkerMemberId;
+        return $this->codewiseMemberId;
     }
 
-    public function setBrinkerMemberId($brinkerMemberId)
+    public function setcodewiseMemberId($codewiseMemberId)
     {
-        $this->brinkerMemberId = $brinkerMemberId;
+        $this->codewiseMemberId = $codewiseMemberId;
     }
 
     public function getRewardId()

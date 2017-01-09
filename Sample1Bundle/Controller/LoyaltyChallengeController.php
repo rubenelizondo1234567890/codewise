@@ -1,6 +1,6 @@
 <?php
 
-namespace RAPP\Bundle\LoyaltyBundle\Controller;
+namespace codewise\Bundle\LoyaltyBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,8 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use RAPP\Bundle\LoyaltyBundle\Model\LoyaltyChallenge;
-use RAPP\Bundle\LoyaltyBundle\Form\LoyaltyChallengeType;
+use codewise\Bundle\LoyaltyBundle\Model\LoyaltyChallenge;
+use codewise\Bundle\LoyaltyBundle\Form\LoyaltyChallengeType;
 
 /**
  * Loyalty Challenge controller.
@@ -24,23 +24,23 @@ class LoyaltyChallengeController extends Controller
      * Lists available Challenges.
      *
      * @Route("/LoyaltyChallenge/{status}", name="LoyaltyChallenges", defaults= {"status" = 0}, requirements = {"status"="2|1|0"})
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:index.html.twig")
      */
     public function LoyaltyChallengeAction($status)
     {
 
         switch ($status) {
             case 1:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableChallenges('active');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableChallenges('active');
                 $status = 1;
                 break;
             case 2:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableChallenges('archive');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableChallenges('archive');
                 $status = 2;
                 break;
             case 0:
             default:
-                $results = $this->get('rapp_loyalty.loyalty_service')->getAvailableChallenges('draft');
+                $results = $this->get('codewise_loyalty.loyalty_service')->getAvailableChallenges('draft');
                 $status = 0;
                 break;
         }
@@ -64,7 +64,7 @@ class LoyaltyChallengeController extends Controller
      * Render the Loyalty Challenge form.
      *
      * @Route("/LoyaltyChallenge/create", name="LoyaltyChallengeCreate")
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:create.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:create.html.twig")
      */
     public function LoyaltyChallengeCreateAction()
     {
@@ -74,11 +74,11 @@ class LoyaltyChallengeController extends Controller
 
         $error = 0;
 
-        $checkCategory = $this->get('rapp_loyalty.loyalty_service')->getCheckCategories();
+        $checkCategory = $this->get('codewise_loyalty.loyalty_service')->getCheckCategories();
 
-        $rewards = $this->get('rapp_loyalty.loyalty_service')->getRewards();
+        $rewards = $this->get('codewise_loyalty.loyalty_service')->getRewards();
 
-        $challengeCategories = $this->get('rapp_loyalty.loyalty_service')->getChallengeCategories();
+        $challengeCategories = $this->get('codewise_loyalty.loyalty_service')->getChallengeCategories();
         
         $createForm = $this->createCreateForm($entity, $checkCategory->allCheckCategories, $rewards->getRewards, $challengeCategories->getChallengeCategories);
 
@@ -99,7 +99,7 @@ class LoyaltyChallengeController extends Controller
                 if (!$entity->getChallengeRequirements1()){$entity->setChallengeRequirements1('');}
                 if (!$entity->getChallengeRequirements2()){$entity->setChallengeRequirements2('');}
 
-                $result = $this->get('rapp_loyalty.loyalty_service')->createChallenge($entity);
+                $result = $this->get('codewise_loyalty.loyalty_service')->createChallenge($entity);
                 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -137,7 +137,7 @@ class LoyaltyChallengeController extends Controller
      * Displays a form to Clone an existing Challenge entity.
      *
      * @Route("/LoyaltyChallenge/{id}/clone", name="LoyaltyChallengeClone")
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:clone.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:clone.html.twig")
      */
     public function cloneAction(Request $request, $id)
     {
@@ -148,13 +148,13 @@ class LoyaltyChallengeController extends Controller
 
         $error = 0;
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getChallenge($id);
+        $results = $this->get('codewise_loyalty.loyalty_service')->getChallenge($id);
 
-        $checkCategory = $this->get('rapp_loyalty.loyalty_service')->getCheckCategories();
+        $checkCategory = $this->get('codewise_loyalty.loyalty_service')->getCheckCategories();
 
-        $rewards = $this->get('rapp_loyalty.loyalty_service')->getRewards();
+        $rewards = $this->get('codewise_loyalty.loyalty_service')->getRewards();
 
-        $challengeCategories = $this->get('rapp_loyalty.loyalty_service')->getChallengeCategories();
+        $challengeCategories = $this->get('codewise_loyalty.loyalty_service')->getChallengeCategories();
 
         $data = $results->challenge;
 
@@ -216,7 +216,7 @@ class LoyaltyChallengeController extends Controller
                 if (!$entity->getChallengeRequirements1()){$entity->setChallengeRequirements1('');}
                 if (!$entity->getChallengeRequirements2()){$entity->setChallengeRequirements2('');}
 
-                $result = $this->get('rapp_loyalty.loyalty_service')->createChallenge($entity);
+                $result = $this->get('codewise_loyalty.loyalty_service')->createChallenge($entity);
                 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -289,19 +289,19 @@ class LoyaltyChallengeController extends Controller
      * Displays a form to edit an existing Challenge entity.
      *
      * @Route("/LoyaltyChallenge/{id}/edit", name="LoyaltyChallengeEdit")
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:edit.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:edit.html.twig")
      */
     public function editAction(Request $request, $id)
     {
         $error = 0;
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->getChallenge($id);
+        $results = $this->get('codewise_loyalty.loyalty_service')->getChallenge($id);
 
-        $checkCategory = $this->get('rapp_loyalty.loyalty_service')->getCheckCategories();
+        $checkCategory = $this->get('codewise_loyalty.loyalty_service')->getCheckCategories();
 
-        $rewards = $this->get('rapp_loyalty.loyalty_service')->getRewards();
+        $rewards = $this->get('codewise_loyalty.loyalty_service')->getRewards();
 
-        $challengeCategories = $this->get('rapp_loyalty.loyalty_service')->getChallengeCategories();
+        $challengeCategories = $this->get('codewise_loyalty.loyalty_service')->getChallengeCategories();
                 
         $entity = $results->challenge;
         
@@ -332,7 +332,7 @@ class LoyaltyChallengeController extends Controller
                 if (!$entity->getChallengeRequirements1()){$entity->setChallengeRequirements1('');}
                 if (!$entity->getChallengeRequirements2()){$entity->setChallengeRequirements2('');}
                 
-                $result = $this->get('rapp_loyalty.loyalty_service')->updateChallenge($entity, $id);
+                $result = $this->get('codewise_loyalty.loyalty_service')->updateChallenge($entity, $id);
 
                 if ($result->errorCode == '00000001') {
                     $error = 0;
@@ -372,11 +372,11 @@ class LoyaltyChallengeController extends Controller
      * Deletes existing Challenge entity.
      *
      * @Route("/LoyaltyChallenge/{id}/delete", name="LoyaltyChallengeDelete")
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:index.html.twig")
      */
     public function deleteAction(Request $request, $id)
     {
-        $result = $this->get('rapp_loyalty.loyalty_service')->deleteChallenge($id);
+        $result = $this->get('codewise_loyalty.loyalty_service')->deleteChallenge($id);
                 
         return $this->redirect($this->generateUrl('LoyaltyChallenges'));
     }
@@ -392,7 +392,7 @@ class LoyaltyChallengeController extends Controller
 
         $newId = $data['campaignId'];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkChallengeCampaignId($newId);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkChallengeCampaignId($newId);
 
         if ($results->challenge) {            
             $challenge = $results->challenge;
@@ -417,7 +417,7 @@ class LoyaltyChallengeController extends Controller
 
         $newId = $data['sku'];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkChallengeSku($newId);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkChallengeSku($newId);
 
         if ($results->challenge) {            
             $challenge = $results->challenge;
@@ -442,7 +442,7 @@ class LoyaltyChallengeController extends Controller
 
         $newId = $data['slug'];
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkChallengeSlug($newId);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkChallengeSlug($newId);
 
         if ($results->challenge) {            
             $challenge = $results->challenge;
@@ -465,7 +465,7 @@ class LoyaltyChallengeController extends Controller
     {
         $data = $request->get('LoyaltyChallenge');
         
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkChallengeCampaignIdEdit($data['campaignId'], $data['entityId']);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkChallengeCampaignIdEdit($data['campaignId'], $data['entityId']);
 
         if ($results->challenge) {            
             $challenge = $results->challenge;
@@ -488,7 +488,7 @@ class LoyaltyChallengeController extends Controller
     {
         $data = $request->get('LoyaltyChallenge');
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkChallengeSkuEdit($data['sku'], $data['entityId']);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkChallengeSkuEdit($data['sku'], $data['entityId']);
 
         if ($results->challenge) {            
             $challenge = $results->challenge;
@@ -511,7 +511,7 @@ class LoyaltyChallengeController extends Controller
     {
         $data = $request->get('LoyaltyChallenge');
 
-        $results = $this->get('rapp_loyalty.loyalty_service')->checkChallengeSlugEdit($data['slug'], $data['entityId']);
+        $results = $this->get('codewise_loyalty.loyalty_service')->checkChallengeSlugEdit($data['slug'], $data['entityId']);
 
         if ($results->challenge) {            
             $challenge = $results->challenge;
@@ -529,11 +529,11 @@ class LoyaltyChallengeController extends Controller
      * Activates existing Challenge entity.
      *
      * @Route("/LoyaltyChallenge/{id}/activate", name="LoyaltyChallengeActivate")
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:index.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:index.html.twig")
      */
     public function activateAction(Request $request, $id)
     {
-        $result = $this->get('rapp_loyalty.loyalty_service')->activateChallenge($id);
+        $result = $this->get('codewise_loyalty.loyalty_service')->activateChallenge($id);
                 
         return $this->redirect($this->generateUrl('LoyaltyChallenges'));
     }
@@ -542,11 +542,11 @@ class LoyaltyChallengeController extends Controller
      * Get Challenge entity.
      *
      * @Route("/LoyaltyChallenge/{id}/view", name="LoyaltyChallengeView")
-     * @Template("RAPPLoyaltyBundle:LoyaltyChallenge:view.html.twig")
+     * @Template("codewiseLoyaltyBundle:LoyaltyChallenge:view.html.twig")
      */
     public function LoyaltyChallengeViewAction(Request $request, $id)
     {
-        $results= $this->get('rapp_loyalty.loyalty_service')->getChallenge($id);
+        $results= $this->get('codewise_loyalty.loyalty_service')->getChallenge($id);
 
         $entity = $results->challenge;
                                

@@ -5,7 +5,7 @@ namespace RetsBundle\Adapter;
 
 /**
  * mlsMarkets
- * Wrapper for market specific constant values
+ * Wcodewiseer for market specific constant values
  */
 final class mlsMarkets
 {
