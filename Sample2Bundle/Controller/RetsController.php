@@ -9,6 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use RetsBundle\Model\RetsSearchFormModel;
 
+/*
+ * This Controller is used only for dumping some info from the Rets Server
+ * All functionality is executed by the Command scripts
+ *
+ */
 class RetsController extends Controller
 {
 
@@ -154,7 +159,7 @@ class RetsController extends Controller
             }
             
         }
-        //dump($photos);
+        dump($photos);
         die('done');
 
         return array(
@@ -162,7 +167,8 @@ class RetsController extends Controller
         );
     }
 
-// Image processing
+// Image processing -- Included here for testing purposes only
+// TODO: move to an appropiate service if think would be useful to keep
 private function processImage($imgBinaryData, $savename){
 
         // Decode Binary data
@@ -203,8 +209,10 @@ private function processImage($imgBinaryData, $savename){
         foreach ($response as $items) {
             array_push($results, $items);
         }
-dump($results);
-die('here');
+
+        dump($results);
+        die('here');
+
         return array(
             'entities' => $results,
             'State' => $state,
