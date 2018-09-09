@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+        	[[% chunk title %]]
+    		[[% endchunk %]]
+    	</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/x-icon" href="asset[[template/img/favicon.ico]]">
+
+    <!-- Bootstrap core CSS -->
+    <link href="asset[[template/css/bootstrap.min.css]]" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="asset[[template/css/dashboard.css]]" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/v/bs4/dt-1.10.16/kt-2.3.2/r-2.2.1/sc-1.4.4/datatables.min.css"/>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />    
+        [[% chunk stylesheets %]]
+        [[% end %]]
+    </head>
+    <body>
+        [[% chunk body %]]
+        [[% end %]]
+        <script src="asset[[template/js/jquery.js]]"></script>
+        <script src="asset[[template/js/jquery-ui.min.js]]"></script>
+        <script src="asset[[template/js/bootstrap.js]]"></script>
+        <script src="asset[[template/js/fontawesome-all.min.js]]"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/v/bs4/dt-1.10.16/kt-2.3.2/r-2.2.1/sc-1.4.4/datatables.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <script type="text/javascript">
+        [[% chunk javascripts %]]
+        [[% end %]]
+        </script>
+    </body>
+</html>
