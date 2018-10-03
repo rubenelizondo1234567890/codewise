@@ -16,7 +16,7 @@ Sample code from past contracts
 		- Sample implementation of command to be executed by a cron job every 15 min.
 			(/Command/RetsBundleMlsFetcherCommand.php)
 			
-#  My personal Microframework 
+#  Codesample -- My personal Microframework 
 	Sample Code Development to show how a MVC framework is builded from scratch and how i solved the basics for having this working :
 		- Router
 		- Request
