@@ -8,7 +8,7 @@ Sample code from past contracts
 		- Sample of OOP in PHP and MVC design pattern
 		- Sample of javascript and Jquery in form views (/Resources/Views)
 
-# Sample2Bundle
+# Sample2Bundle -- Look in the command folder and follow from there
 
 	Sample Code Development as part of the x Company new System for Real Estate Business
 		- Framework: Symfony 3.2+
